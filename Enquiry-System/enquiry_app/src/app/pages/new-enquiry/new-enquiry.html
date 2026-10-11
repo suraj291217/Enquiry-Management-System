@@ -38,91 +38,118 @@
 		</div>
 
 		<div class="card-body form-card-body">
-			<form class="enquiry-form" [formGroup]="enquiryForm" (ngSubmit)="onSubmit()">
+			<form #enquiryFormDirective="ngForm" class="enquiry-form" [formGroup]="enquiryForm" (ngSubmit)="onSubmit()">
 				@if (apiError()) {
 					<p class="request-error" role="alert">{{ apiError() }}</p>
 				}
-				<div class="form-section-heading">
-					<span class="section-number">01</span>
-					<div>
-						<h3>Customer information</h3>
-						<p>Start with your contact details.</p>
-					</div>
-				</div>
+				<mat-vertical-stepper #stepper class="enquiry-stepper" aria-label="New enquiry form steps" (selectionChange)="onStepSelectionChange($event, stepper)">
+					<mat-step [completed]="isContactInformationComplete()">
+						<ng-template matStepLabel>
+							<span class="step-title">Your details</span>
+							<span class="step-description">How we can reach you</span>
+						</ng-template>
 
-				<div class="form-grid form-grid-two">
-					<div class="form-field form-field-wide">
-						<label for="customerName">Your name <span>*</span></label>
-						<mat-form-field appearance="outline" subscriptSizing="dynamic">
-							<input matInput id="customerName" formControlName="customerName" type="text" placeholder="e.g. Suraj Jagadeesh" (input)="saveEnquiryDraft()" />
-						</mat-form-field>
-					</div>
+						<div class="step-content">
+							<div class="form-grid form-grid-two">
+								<div class="form-field form-field-wide">
+									<mat-form-field appearance="outline" subscriptSizing="dynamic">
+										<mat-label>Your name</mat-label>
+										<input matInput id="customerName" formControlName="customerName" type="text" (input)="saveEnquiryDraft()" />
+										@if (enquiryForm.controls.customerName.touched && (!enquiryForm.controls.customerName.valid || !enquiryForm.controls.customerName.value.trim())) {
+											<mat-error>Please enter your name.</mat-error>
+										}
+									</mat-form-field>
+								</div>
 
-					<div class="form-field">
-						<label for="customerPhone">Your phone <span>*</span></label>
-						<mat-form-field appearance="outline" subscriptSizing="dynamic">
-							<input matInput id="customerPhone" formControlName="customerPhone" type="tel" placeholder="e.g. +91 98765 43210" (input)="saveEnquiryDraft()" />
-						</mat-form-field>
-					</div>
+								<div class="form-field">
+									<mat-form-field appearance="outline" subscriptSizing="dynamic">
+										<mat-label>Your phone</mat-label>
+										<input matInput id="customerPhone" formControlName="customerPhone" type="tel" (input)="saveEnquiryDraft()" />
+										@if (enquiryForm.controls.customerPhone.touched && !enquiryForm.controls.customerPhone.valid) {
+											<mat-error>Enter a valid phone number.</mat-error>
+										}
+									</mat-form-field>
+								</div>
 
-					<div class="form-field form-field-wide">
-						<label for="customerEmail">Your email <span>*</span></label>
-						<mat-form-field appearance="outline" subscriptSizing="dynamic">
-							<input matInput id="customerEmail" formControlName="customerEmail" type="email" placeholder="e.g. suraj@gmail.com" (input)="saveEnquiryDraft()" />
-						</mat-form-field>
-					</div>
-				</div>
+								<div class="form-field form-field-wide">
+									<mat-form-field appearance="outline" subscriptSizing="dynamic">
+										<mat-label>Your email</mat-label>
+										<input matInput id="customerEmail" formControlName="customerEmail" type="email" (input)="saveEnquiryDraft()" />
+										@if (enquiryForm.controls.customerEmail.touched && !enquiryForm.controls.customerEmail.valid) {
+											<mat-error>Enter a valid email address.</mat-error>
+										}
+									</mat-form-field>
+								</div>
+							</div>
 
-				<div class="form-section-heading section-heading-spaced">
-					<span class="section-number">02</span>
-					<div>
-						<h3>Request details</h3>
-						<p>Tell us what you need help with.</p>
-					</div>
-				</div>
+							<div class="step-actions">
+								<button class="btn save-button" type="button" (click)="continueToRequestDetails(stepper)">
+									Continue <span class="submit-arrow" aria-hidden="true">&#8594;</span>
+								</button>
+							</div>
+						</div>
+					</mat-step>
 
-				<div class="form-grid form-grid-two">
-					<div class="form-field">
-						<label for="categoryId">Category <span>*</span></label>
-						<mat-form-field appearance="outline" class="material-select-field" subscriptSizing="dynamic">
-							<mat-select id="categoryId" formControlName="categoryId" aria-label="Category" placeholder="Select a category" (selectionChange)="saveEnquiryDraft()">
-								<mat-option value="" disabled>Select a category</mat-option>
-							@for (category of activeCategories; track category.categoryId) {
-								<mat-option [value]="category.categoryId.toString()">{{ category.categoryName }}</mat-option>
-							}
-							</mat-select>
-						</mat-form-field>
-					</div>
+					<mat-step>
+						<ng-template matStepLabel>
+							<span class="step-title">Your request</span>
+							<span class="step-description">A few details about how we can help</span>
+						</ng-template>
 
-					<div class="form-field">
-						<label for="enquiryType">Enquiry type <span>*</span></label>
-						<mat-form-field appearance="outline" class="material-select-field" subscriptSizing="dynamic">
-							<mat-select id="enquiryType" formControlName="enquiryType" aria-label="Enquiry type" placeholder="Select enquiry type" (selectionChange)="saveEnquiryDraft()">
-								<mat-option value="" disabled>Select enquiry type</mat-option>
-								<mat-option value="General">General</mat-option>
-								<mat-option value="Sales">Sales</mat-option>
-								<mat-option value="Technical">Technical</mat-option>
-							</mat-select>
-						</mat-form-field>
-					</div>
-				</div>
+						<div class="step-content">
+							<div class="form-grid form-grid-two">
+								<div class="form-field">
+									<mat-form-field appearance="outline" class="material-select-field" subscriptSizing="dynamic">
+										<mat-label>Category</mat-label>
+										<mat-select id="categoryId" formControlName="categoryId" aria-label="Category" (selectionChange)="saveEnquiryDraft()">
+											@for (category of activeCategories; track category.categoryId) {
+												<mat-option [value]="category.categoryId.toString()">{{ category.categoryName }}</mat-option>
+											}
+										</mat-select>
+										@if (enquiryForm.controls.categoryId.touched && !enquiryForm.controls.categoryId.valid) {
+											<mat-error>Please choose a category.</mat-error>
+										}
+									</mat-form-field>
+								</div>
 
-				<div class="form-grid">
-					<div class="form-field">
-						<label for="message">Message <span>*</span></label>
-					<mat-form-field appearance="outline" subscriptSizing="dynamic">
-						<textarea matInput id="message" formControlName="message" rows="4" placeholder="Describe your enquiry in detail..." (input)="saveEnquiryDraft()"></textarea>
-					</mat-form-field>
-					</div>
-				</div>
+								<div class="form-field">
+									<mat-form-field appearance="outline" class="material-select-field" subscriptSizing="dynamic">
+										<mat-label>Enquiry type</mat-label>
+										<mat-select id="enquiryType" formControlName="enquiryType" aria-label="Enquiry type" (selectionChange)="saveEnquiryDraft()">
+											<mat-option value="General">General</mat-option>
+											<mat-option value="Sales">Sales</mat-option>
+											<mat-option value="Technical">Technical</mat-option>
+										</mat-select>
+										@if (enquiryForm.controls.enquiryType.touched && !enquiryForm.controls.enquiryType.valid) {
+											<mat-error>Please choose an enquiry type.</mat-error>
+										}
+									</mat-form-field>
+								</div>
+							</div>
 
-				<div class="form-actions">
-					<button class="btn btn-outline-secondary reset-button" type="button" (click)="resetForm()">Clear form</button>
-					<button class="btn save-button" type="submit" [disabled]="submitting()">
-						{{ submitting() ? 'Submitting...' : 'Submit enquiry' }}
-						@if (!submitting()) { <span class="submit-arrow" aria-hidden="true">&#8594;</span> }
-					</button>
-				</div>
+							<div class="form-grid">
+								<div class="form-field">
+									<mat-form-field appearance="outline" subscriptSizing="dynamic">
+										<mat-label>Message</mat-label>
+										<textarea matInput id="message" formControlName="message" rows="4" (input)="saveEnquiryDraft()"></textarea>
+										@if (enquiryForm.controls.message.touched && (!enquiryForm.controls.message.valid || !enquiryForm.controls.message.value.trim())) {
+											<mat-error>Please describe your enquiry.</mat-error>
+										}
+									</mat-form-field>
+								</div>
+							</div>
+
+							<div class="form-actions">
+								<button class="btn btn-outline-secondary reset-button" type="button" matStepperPrevious>Back</button>
+								<button class="btn btn-outline-secondary reset-button" type="button" (click)="resetForm()">Clear form</button>
+								<button class="btn save-button" type="submit" [disabled]="submitting()">
+									{{ submitting() ? 'Submitting...' : 'Submit enquiry' }}
+									@if (!submitting()) { <span class="submit-arrow" aria-hidden="true">&#8594;</span> }
+								</button>
+							</div>
+						</div>
+					</mat-step>
+				</mat-vertical-stepper>
 			</form>
 		</div>
 	</div>
@@ -204,23 +231,34 @@
 	<!-- Success Modal -->
 	@if (showSuccessModal) {
 		<div class="modal-overlay" (click)="closeModal()">
-			<div class="modal-content" (click)="$event.stopPropagation()">
+			<div class="modal-content success-modal" role="dialog" aria-modal="true" aria-labelledby="success-modal-title" aria-describedby="success-modal-description" (click)="$event.stopPropagation()">
 				<div class="modal-header">
-					<span class="modal-icon success">&#10004;</span>
-					<h2>Enquiry Submitted Successfully!</h2>
+					<div class="modal-icon success" aria-hidden="true">
+						<svg viewBox="0 0 24 24" focusable="false">
+							<path d="m5 12.5 4.2 4.2L19 7" />
+						</svg>
+					</div>
+					<p class="success-eyebrow">Request received</p>
+					<h2 id="success-modal-title">Enquiry submitted</h2>
 				</div>
 				<div class="modal-body">
-					<p class="modal-message">
-						Thank you, <strong>{{ submittedCustomerName }}</strong>! Your enquiry <strong>{{ submittedEnquiryId }}</strong> has been submitted successfully.
+					<p class="modal-message" id="success-modal-description">
+						Thank you, <strong>{{ submittedCustomerName }}</strong>. Your request is now with our support team.
 					</p>
+					<div class="submitted-id">
+						<div>
+							<span class="submitted-id-label">Enquiry ID</span>
+							<strong>{{ submittedEnquiryId }}</strong>
+						</div>
+						<button class="modal-action modal-action-secondary copy-id-button" type="button" (click)="copySubmittedEnquiryId()">Copy ID</button>
+					</div>
 					<p class="modal-submessage">
-						Our team will review it and get back to you within <strong>24 hours</strong>.
+						Our team will review your enquiry and get back to you within <strong>24 hours</strong>.
 					</p>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-track" type="button" (click)="copySubmittedEnquiryId()">Copy ID</button>
-					<button class="btn btn-track" type="button" (click)="trackSubmittedEnquiry()">Track this enquiry</button>
-					<button class="btn btn-primary" (click)="closeModal()">Got it, thanks!</button>
+					<button class="modal-action modal-action-primary" type="button" (click)="trackSubmittedEnquiry()">Track this enquiry</button>
+					<button class="modal-action modal-action-secondary" type="button" (click)="closeModal()">Done</button>
 				</div>
 			</div>
 		</div>

@@ -1,7 +1,6 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroupDirective, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastService } from '../../services/toast.service';
 import { CommonModule } from '@angular/common';
 import { CategoryService } from '../../services/category.service';
@@ -11,12 +10,14 @@ import { ICustomerEnquiryStatus } from '../../model/enquiry.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatSnackBarModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatStepperModule, MatSnackBarModule],
   selector: 'app-new-enquiry',
   styleUrl: './new-enquiry.css',
   templateUrl: './new-enquiry.html',
@@ -31,6 +32,8 @@ export class NewEnquiry implements OnInit {
   statusService = inject(StatusService);
   private readonly router = inject(Router);
   private readonly formBuilder = inject(FormBuilder);
+
+  @ViewChild('enquiryFormDirective') private enquiryFormDirective?: FormGroupDirective;
 
   showSuccessModal = false;
   submittedEnquiryId: string = '';
@@ -73,6 +76,42 @@ export class NewEnquiry implements OnInit {
 
   saveTrackingDraft(): void {
     sessionStorage.setItem(this.TRACKING_DRAFT_KEY, JSON.stringify(this.trackingForm));
+  }
+
+  isContactInformationComplete(): boolean {
+    const { customerName, customerPhone, customerEmail } = this.enquiryForm.controls;
+    const phoneDigits = customerPhone.value.replace(/\D/g, '');
+    return !!customerName.value.trim()
+      && customerPhone.valid
+      && phoneDigits.length >= 7
+      && phoneDigits.length <= 15
+      && customerEmail.valid;
+  }
+
+  continueToRequestDetails(stepper: MatStepper): void {
+    if (!this.isContactInformationComplete()) {
+      this.markContactInformationTouched();
+      return;
+    }
+
+    stepper.next();
+  }
+
+  onStepSelectionChange(event: StepperSelectionEvent, stepper: MatStepper): void {
+    if (event.selectedIndex > event.previouslySelectedIndex && !this.isContactInformationComplete()) {
+      this.markContactInformationTouched();
+      queueMicrotask(() => {
+        if (stepper.selectedIndex === event.selectedIndex) {
+          stepper.selectedIndex = event.previouslySelectedIndex;
+        }
+      });
+    }
+  }
+
+  private markContactInformationTouched(): void {
+    this.enquiryForm.controls.customerName.markAsTouched();
+    this.enquiryForm.controls.customerPhone.markAsTouched();
+    this.enquiryForm.controls.customerEmail.markAsTouched();
   }
 
   private restoreSessionDrafts(): void {
@@ -275,7 +314,11 @@ export class NewEnquiry implements OnInit {
   }
 
   resetForm(): void {
-    this.enquiryForm.reset();
+    if (this.enquiryFormDirective) {
+      this.enquiryFormDirective.resetForm();
+    } else {
+      this.enquiryForm.reset();
+    }
     sessionStorage.removeItem(this.ENQUIRY_DRAFT_KEY);
   }
 

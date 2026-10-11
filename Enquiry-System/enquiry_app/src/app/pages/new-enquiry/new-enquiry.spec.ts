@@ -102,6 +102,39 @@ describe('NewEnquiry', () => {
     );
   });
 
+  it('clears submitted field error state after a successful submission', async () => {
+    const httpTesting = TestBed.inject(HttpTestingController);
+    component.enquiryForm.setValue({
+      customerName: 'Avery Chen',
+      customerPhone: '5550100',
+      customerEmail: 'avery@example.com',
+      categoryId: '1',
+      enquiryType: 'General',
+      message: 'Question about an order',
+    });
+
+    component.onSubmit();
+    httpTesting.expectOne('/api/enquiries').flush({
+      enquiryId: 1,
+      customerName: 'Avery Chen',
+      customerEmail: 'avery@example.com',
+      customerPhone: '5550100',
+      categoryId: 1,
+      statusId: 1,
+      enquiryType: 'General',
+      enquiryDetails: 'Question about an order',
+      createdDate: '2026-10-04T00:00:00.000Z',
+    }, { status: 201, statusText: 'Created' });
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const form = fixture.nativeElement.querySelector('.enquiry-form') as HTMLFormElement;
+    expect(form.classList.contains('ng-submitted')).toBe(false);
+    expect(form.querySelector('.mat-form-field-invalid')).toBeNull();
+    expect(component.enquiryForm.pristine).toBe(true);
+    expect(component.enquiryForm.untouched).toBe(true);
+  });
+
   it('looks up status with GET and clears loading state on a REST 404', () => {
     const loadingService = TestBed.inject(ApiLoadingService);
     const httpTesting = TestBed.inject(HttpTestingController);
@@ -163,6 +196,20 @@ describe('NewEnquiry', () => {
     });
     expect(component.trackingResult()).not.toHaveProperty('customerEmail');
     expect(fixture.nativeElement.querySelector('.tracking-response p')?.textContent).toContain('Internal follow-up needed');
+  });
+
+  it('requires valid contact details before continuing to request details', () => {
+    expect(component.isContactInformationComplete()).toBe(false);
+
+    component.enquiryForm.patchValue({
+      customerName: 'Avery Chen',
+      customerPhone: '5550100',
+      customerEmail: 'not-an-email',
+    });
+    expect(component.isContactInformationComplete()).toBe(false);
+
+    component.enquiryForm.patchValue({ customerEmail: 'avery@example.com' });
+    expect(component.isContactInformationComplete()).toBe(true);
   });
 
   it('does not return an enquiry for a mismatched email or a trashed enquiry', () => {

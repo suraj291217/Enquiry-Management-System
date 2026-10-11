@@ -107,6 +107,71 @@ app-root {
 	max-width: 1240px;
 }
 
+.portal-page .enquiry-stepper {
+	--mat-stepper-container-color: transparent;
+	--mat-stepper-header-label-text-color: #718286;
+	--mat-stepper-header-selected-state-label-text-color: #18313b;
+	--mat-stepper-header-label-text-font: var(--bs-body-font-family);
+	--mat-stepper-header-label-text-size: 0.82rem;
+	--mat-stepper-header-label-text-weight: 700;
+	--mat-stepper-container-text-font: var(--bs-body-font-family);
+	--mat-stepper-header-selected-state-icon-background-color: #287c79;
+	--mat-stepper-header-selected-state-icon-foreground-color: #fff;
+	--mat-stepper-header-done-state-icon-background-color: #e2f1ec;
+	--mat-stepper-header-done-state-icon-foreground-color: #287c79;
+	--mat-stepper-header-edit-state-icon-background-color: #e2f1ec;
+	--mat-stepper-header-edit-state-icon-foreground-color: #287c79;
+}
+
+.portal-page .enquiry-stepper .step-title,
+.portal-page .enquiry-stepper .step-description {
+	display: block;
+}
+
+.portal-page .enquiry-stepper .step-title {
+	color: #18313b;
+	font-size: 0.82rem;
+	font-family: var(--bs-body-font-family);
+	font-weight: 700;
+}
+
+.portal-page .enquiry-stepper .step-description {
+	color: #718286;
+	font-size: 0.68rem;
+	font-family: var(--bs-body-font-family);
+	font-weight: 400;
+	margin-top: 3px;
+}
+
+.portal-page .enquiry-stepper .mat-vertical-stepper-header {
+	padding: 24px;
+}
+
+.portal-page .enquiry-stepper .mat-vertical-content {
+	padding: 0 24px 24px;
+}
+
+.portal-page .enquiry-stepper .step-content {
+	display: grid;
+	gap: 20px;
+	padding: 12px 0 8px;
+}
+
+.portal-page .enquiry-stepper .step-actions {
+	border-top: 1px solid #edf2f0;
+	display: flex;
+	justify-content: flex-end;
+	padding-top: 18px;
+}
+
+.portal-page .enquiry-stepper .form-field mat-error {
+	font-size: 0.68rem;
+}
+
+.portal-page .enquiry-stepper .mat-mdc-form-field-required-marker {
+	color: #c46746;
+}
+
 .portal-hero {
 	background: #e2f1ec;
 	border: 1px solid #cfe7de;
@@ -338,6 +403,212 @@ app-root {
 	color: #1d6666;
 }
 
+.enquiry-page .modal-overlay {
+	align-items: center;
+	animation: enquiry-modal-fade-in 0.2s ease-out;
+	backdrop-filter: blur(3px);
+	background: rgba(24, 49, 59, 0.58);
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	left: 0;
+	padding: 20px;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 1000;
+}
+
+.enquiry-page .success-modal {
+	animation: enquiry-modal-slide-up 0.3s ease-out;
+	background: #fff;
+	border: 1px solid #dce8e4;
+	border-radius: 16px;
+	box-shadow: 0 24px 64px rgba(24, 49, 59, 0.2);
+	max-width: 480px;
+	overflow: hidden;
+	width: 100%;
+}
+
+.enquiry-page .success-modal .modal-header {
+	align-items: center;
+	background: #f4f8f6;
+	border-bottom: 1px solid #e4ece9;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 30px 32px 24px;
+	text-align: center;
+}
+
+.enquiry-page .success-modal .modal-icon {
+	align-items: center;
+	border-radius: 50%;
+	display: inline-flex;
+	height: 58px;
+	justify-content: center;
+	margin: 0 0 20px;
+	width: 58px;
+}
+
+.enquiry-page .success-modal .modal-icon.success {
+	background: #e2f1ec;
+	border: 1px solid #c8e5df;
+	color: #287c79;
+}
+
+.enquiry-page .success-modal .modal-icon svg {
+	fill: none;
+	height: 30px;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 2.4;
+	width: 30px;
+}
+
+.enquiry-page .success-modal .success-eyebrow {
+	color: #287c79;
+	font-size: 0.66rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	margin: 0 0 8px;
+	text-transform: uppercase;
+}
+
+.enquiry-page .success-modal .modal-header h2 {
+	color: #18313b;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 1.65rem;
+	font-weight: 400;
+	letter-spacing: -0.02em;
+	margin: 0;
+}
+
+.enquiry-page .success-modal .modal-body {
+	padding: 24px 30px 26px;
+}
+
+.enquiry-page .success-modal .modal-message {
+	color: #18313b;
+	font-size: 0.84rem;
+	line-height: 1.65;
+	margin: 0 0 18px;
+}
+
+.enquiry-page .success-modal .modal-submessage {
+	color: #718286;
+	font-size: 0.78rem;
+	line-height: 1.6;
+	margin: 18px 0 0;
+}
+
+.enquiry-page .success-modal .modal-submessage strong {
+	color: #18313b;
+	font-weight: 700;
+}
+
+.enquiry-page .success-modal .submitted-id {
+	align-items: center;
+	background: #f4f8f6;
+	border: 1px solid #e4ece9;
+	border-radius: 9px;
+	display: flex;
+	gap: 12px;
+	justify-content: space-between;
+	padding: 12px 14px;
+}
+
+.enquiry-page .success-modal .submitted-id > div {
+	display: grid;
+	gap: 4px;
+}
+
+.enquiry-page .success-modal .submitted-id-label {
+	color: #718286;
+	font-size: 0.61rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.enquiry-page .success-modal .submitted-id strong {
+	color: #18313b;
+	font-family: Consolas, monospace;
+	font-size: 0.9rem;
+	letter-spacing: 0.02em;
+}
+
+.enquiry-page .success-modal .modal-footer {
+	align-items: center;
+	background: #fff;
+	border-top: 1px solid #e4ece9;
+	display: flex;
+	gap: 10px;
+	justify-content: space-between;
+	padding: 18px 30px;
+}
+
+.enquiry-page .success-modal .modal-action {
+	align-items: center;
+	border: 1px solid transparent;
+	border-radius: 7px;
+	cursor: pointer;
+	display: inline-flex;
+	font: inherit;
+	font-size: 0.74rem;
+	font-weight: 700;
+	justify-content: center;
+	min-height: 40px;
+	padding: 9px 15px;
+	transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.enquiry-page .success-modal .modal-action:focus-visible {
+	outline: 2px solid #59c2b1;
+	outline-offset: 2px;
+}
+
+.enquiry-page .success-modal .modal-action-primary {
+	background: #287c79;
+	color: #fff;
+}
+
+.enquiry-page .success-modal .modal-action-primary:hover {
+	background: #1d6666;
+}
+
+.enquiry-page .success-modal .modal-action-secondary {
+	background: #fff;
+	border-color: #cfe1db;
+	color: #287c79;
+}
+
+.enquiry-page .success-modal .modal-action-secondary:hover {
+	background: #eaf4f0;
+	border-color: #a8cfc2;
+}
+
+.enquiry-page .success-modal .modal-action-tertiary {
+	background: transparent;
+	color: #718286;
+}
+
+.enquiry-page .success-modal .modal-action-tertiary:hover {
+	background: #f4f8f6;
+	color: #18313b;
+}
+
+@keyframes enquiry-modal-fade-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes enquiry-modal-slide-up {
+	from { opacity: 0; transform: translateY(30px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 991px) {
 	.portal-hero {
 		padding: 26px;
@@ -382,6 +653,35 @@ app-root {
 	}
 
 	.modal-footer .btn {
+		width: 100%;
+	}
+
+	.enquiry-page .success-modal {
+		max-width: 440px;
+	}
+
+	.enquiry-page .success-modal .modal-header,
+	.enquiry-page .success-modal .modal-body {
+		padding-left: 22px;
+		padding-right: 22px;
+	}
+
+	.enquiry-page .success-modal .modal-footer {
+		align-items: stretch;
+		flex-direction: column;
+		padding: 16px 22px;
+	}
+
+	.enquiry-page .success-modal .modal-action {
+		width: 100%;
+	}
+
+	.enquiry-page .success-modal .submitted-id {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.enquiry-page .success-modal .copy-id-button {
 		width: 100%;
 	}
 }

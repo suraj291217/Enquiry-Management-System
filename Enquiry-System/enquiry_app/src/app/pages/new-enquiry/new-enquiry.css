@@ -113,42 +113,6 @@
 	gap: 22px;
 }
 
-.form-section-heading {
-	align-items: center;
-	display: flex;
-	gap: 12px;
-}
-
-.section-heading-spaced {
-	border-top: 1px solid #edf2f0;
-	padding-top: 24px;
-}
-
-.section-number {
-	align-items: center;
-	background: #e2f1ec;
-	border-radius: 50%;
-	color: var(--enquiry-green);
-	display: inline-flex;
-	font-family: Consolas, monospace;
-	font-size: 0.65rem;
-	height: 31px;
-	justify-content: center;
-	width: 31px;
-}
-
-.form-section-heading h3 {
-	font-size: 0.88rem;
-	font-weight: 700;
-	margin: 0;
-}
-
-.form-section-heading p {
-	color: var(--enquiry-muted);
-	font-size: 0.68rem;
-	margin: 4px 0 0;
-}
-
 .form-grid {
 	display: grid;
 	gap: 18px 20px;
@@ -157,10 +121,6 @@
 
 .form-grid-two {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.form-grid-three {
-	grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .form-field-wide {
@@ -182,14 +142,17 @@
 .form-field mat-form-field {
 	display: block;
 	width: 100%;
-	--mat-form-field-container-text-font: inherit;
+	--mat-form-field-container-text-font: var(--bs-body-font-family);
 	--mat-form-field-container-text-size: 0.8rem;
+	--mat-form-field-outlined-label-text-font: var(--bs-body-font-family);
+	--mat-form-field-outlined-label-text-size: 0.76rem;
+	--mat-form-field-outlined-label-text-weight: 600;
 	--mat-form-field-outlined-outline-color: #dce8e4;
 	--mat-form-field-outlined-hover-outline-color: #9abdb3;
 	--mat-form-field-outlined-focus-outline-color: #287c79;
 	--mat-form-field-outlined-focus-label-text-color: #287c79;
 	--mat-form-field-outlined-container-shape: 7px;
-	--mat-select-trigger-text-font: inherit;
+	--mat-select-trigger-text-font: var(--bs-body-font-family);
 	--mat-select-trigger-text-size: 0.8rem;
 }
 
@@ -385,7 +348,6 @@
 		padding: 36px 24px 52px;
 	}
 
-	.form-grid-three,
 	.form-grid-two {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
@@ -419,7 +381,6 @@
 		padding: 24px 18px 22px !important;
 	}
 
-	.form-grid-three,
 	.form-grid-two {
 		grid-template-columns: minmax(0, 1fr);
 	}
@@ -429,143 +390,6 @@
 	}
 
 	.form-actions button {
-		width: 100%;
-	}
-}
-
-/* Success Modal Styles */
-.modal-overlay {
-	align-items: center;
-	background: rgba(24, 49, 59, 0.75);
-	bottom: 0;
-	display: flex;
-	justify-content: center;
-	left: 0;
-	padding: 20px;
-	position: fixed;
-	right: 0;
-	top: 0;
-	z-index: 1000;
-	animation: fadeIn 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-
-.modal-content {
-	background: #ffffff;
-	border-radius: 12px;
-	box-shadow: 0 20px 60px rgba(24, 49, 59, 0.3);
-	max-width: 520px;
-	width: 100%;
-	animation: slideUp 0.3s ease-out;
-}
-
-@keyframes slideUp {
-	from {
-		transform: translateY(30px);
-		opacity: 0;
-	}
-	to {
-		transform: translateY(0);
-		opacity: 1;
-	}
-}
-
-.modal-header {
-	border-bottom: 1px solid var(--enquiry-line);
-	padding: 32px 32px 24px;
-	text-align: center;
-}
-
-.modal-icon {
-	align-items: center;
-	border-radius: 50%;
-	display: inline-flex;
-	font-size: 2rem;
-	height: 64px;
-	justify-content: center;
-	margin-bottom: 16px;
-	width: 64px;
-}
-
-.modal-icon.success {
-	background: #e8f5f4;
-	color: var(--enquiry-green);
-}
-
-.modal-header h2 {
-	color: var(--enquiry-ink);
-	font-family: Georgia, "Times New Roman", serif;
-	font-size: 1.5rem;
-	font-weight: 400;
-	letter-spacing: -0.02em;
-	margin: 0;
-}
-
-.modal-body {
-	padding: 24px 32px;
-}
-
-.modal-message {
-	color: var(--enquiry-ink);
-	font-size: 1rem;
-	line-height: 1.6;
-	margin: 0 0 12px;
-}
-
-.modal-submessage {
-	color: var(--enquiry-muted);
-	font-size: 0.95rem;
-	line-height: 1.6;
-	margin: 0;
-}
-
-.modal-footer {
-	border-top: 1px solid var(--enquiry-line);
-	padding: 20px 32px;
-	text-align: center;
-}
-
-.modal-footer .btn {
-	min-width: 160px;
-	padding: 12px 24px;
-}
-
-.btn-primary {
-	background: var(--enquiry-green);
-	border: 2px solid var(--enquiry-green);
-	color: #ffffff;
-	cursor: pointer;
-	font-weight: 600;
-	transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-	background: #236966;
-	border-color: #236966;
-	transform: translateY(-1px);
-}
-
-@media (max-width: 640px) {
-	.modal-content {
-		margin: 20px;
-	}
-
-	.modal-header,
-	.modal-body,
-	.modal-footer {
-		padding-left: 24px;
-		padding-right: 24px;
-	}
-
-	.modal-footer .btn {
 		width: 100%;
 	}
 }

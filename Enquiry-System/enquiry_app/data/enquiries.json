@@ -85,5 +85,49 @@
     "createdDate": "2026-10-10T15:54:43.486Z",
     "resolutionNotes": "thanks for informing thanks siva and shreyas",
     "updatedDate": "2026-10-10T15:57:35.091Z"
+  },
+  {
+    "customerName": "Hari",
+    "customerEmail": "hari@gmail.com",
+    "customerPhone": "8394293232",
+    "categoryId": 2,
+    "statusId": 1,
+    "enquiryType": "Sales",
+    "enquiryDetails": "testing stepper",
+    "enquiryId": 8,
+    "createdDate": "2026-10-11T09:03:45.398Z"
+  },
+  {
+    "customerName": "Nikhil",
+    "customerEmail": "nikhil@gmail.com",
+    "customerPhone": "3973772821",
+    "categoryId": 2,
+    "statusId": 1,
+    "enquiryType": "Sales",
+    "enquiryDetails": "stepper testing",
+    "enquiryId": 9,
+    "createdDate": "2026-10-11T09:05:19.147Z"
+  },
+  {
+    "customerName": "Shashank",
+    "customerEmail": "shashank@gmail.com",
+    "customerPhone": "3732923722",
+    "categoryId": 2,
+    "statusId": 1,
+    "enquiryType": "Technical",
+    "enquiryDetails": "help me clear my backlog",
+    "enquiryId": 10,
+    "createdDate": "2026-10-11T09:13:15.633Z"
+  },
+  {
+    "customerName": "Anthony",
+    "customerEmail": "anthony@gmail.com",
+    "customerPhone": "934782381",
+    "categoryId": 3,
+    "statusId": 1,
+    "enquiryType": "Sales",
+    "enquiryDetails": "testing dialog box",
+    "enquiryId": 11,
+    "createdDate": "2026-10-11T09:17:38.923Z"
   }
 ]
