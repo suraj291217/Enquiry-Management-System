@@ -1,0 +1,16 @@
+@if (confirmation(); as dialog) {
+	<div class="confirmation-backdrop" (click)="cancel()" (keydown.escape)="cancel()">
+		<section class="confirmation-dialog" role="alertdialog" aria-modal="true" [attr.aria-label]="dialog.title" (click)="$event.stopPropagation()">
+			<span class="confirmation-icon" [class.destructive]="dialog.destructive" aria-hidden="true">!</span>
+			<div class="confirmation-copy">
+				<p class="confirmation-kicker">Confirm action</p>
+				<h2>{{ dialog.title }}</h2>
+				<p>{{ dialog.message }}</p>
+			</div>
+			<footer class="confirmation-actions">
+				<button class="confirmation-cancel" type="button" (click)="cancel()">{{ dialog.cancelLabel ?? 'Cancel' }}</button>
+				<button class="confirmation-submit" [class.destructive]="dialog.destructive" type="button" (click)="confirm()">{{ dialog.confirmLabel ?? 'Confirm' }}</button>
+			</footer>
+		</section>
+	</div>
+}

@@ -1,0 +1,77 @@
+<section class="detail-page">
+  <a class="back-link" routerLink="/admin/enquiries">&larr; Back to enquiries</a>
+
+  @if (enquiry(); as record) {
+    <header class="detail-heading">
+      <div>
+        <p class="page-kicker">{{ getEnquiryCode(record) }}</p>
+        <h1>Enquiry details</h1>
+        <p class="page-intro">Review the customer request and update its progress.</p>
+      </div>
+      <span class="status-pill">{{ getStatusName(record.statusId) }}</span>
+    </header>
+
+    <div class="detail-layout">
+      <section class="detail-section customer-section" aria-labelledby="customer-heading">
+        <p class="section-label">Customer</p>
+        <h2 id="customer-heading">{{ record.customerName }}</h2>
+        <a [href]="'mailto:' + record.customerEmail">{{ record.customerEmail }}</a>
+        <a [href]="'tel:' + record.customerPhone">{{ record.customerPhone }}</a>
+      </section>
+
+      <dl class="detail-facts">
+        <div><dt>Category</dt><dd>{{ getCategoryName(record.categoryId) }}</dd></div>
+        <div><dt>Enquiry type</dt><dd>{{ record.enquiryType }}</dd></div>
+        <div><dt>Submitted</dt><dd>{{ record.createdDate | date: 'medium' }}</dd></div>
+        @if (record.updatedDate) {
+          <div><dt>Last updated</dt><dd>{{ record.updatedDate | date: 'medium' }}</dd></div>
+        }
+      </dl>
+
+      <section class="detail-section message-section" aria-labelledby="message-heading">
+        <p class="section-label">Request</p>
+        <h2 id="message-heading">Customer message</h2>
+        <p class="customer-message">{{ record.enquiryDetails }}</p>
+      </section>
+
+      @if (record.isDeleted) {
+        <p class="trash-notice" role="status">This enquiry is in trash. Restore it to return it to the enquiry list.</p>
+      } @else {
+        <section class="detail-section response-section" aria-labelledby="response-heading">
+          <p class="section-label">Admin workspace</p>
+          <h2 id="response-heading">Update enquiry</h2>
+          <div class="form-field">
+            <label id="enquiryStatusLabel" for="enquiryStatus">Status</label>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-select id="enquiryStatus" name="enquiryStatus" aria-labelledby="enquiryStatusLabel" [(ngModel)]="editStatusId">
+                @for (status of activeStatuses(); track status.statusId) {
+                  <mat-option [value]="status.statusId.toString()">{{ status.statusName }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <label for="resolutionNotes">Admin response</label>
+            <textarea id="resolutionNotes" name="resolutionNotes" rows="5" placeholder="Write an update visible to the customer..." [(ngModel)]="editResolutionNotes"></textarea>
+          </div>
+        </section>
+      }
+    </div>
+
+    <footer class="detail-actions">
+      @if (record.isDeleted) {
+        <button class="save-button" type="button" (click)="restoreEnquiry()">Restore enquiry</button>
+      } @else {
+        <button class="trash-button" type="button" (click)="moveToTrash()">Move to trash</button>
+        <button class="save-button" type="button" (click)="saveDetails()">Save updates</button>
+      }
+    </footer>
+  } @else {
+    <section class="not-found" role="status">
+      <p class="page-kicker">Record unavailable</p>
+      <h1>Enquiry not found</h1>
+      <p class="page-intro">There is no enquiry with this ID. It may have been removed or the link may be incorrect.</p>
+      <a class="back-link" routerLink="/admin/enquiries">Return to enquiries</a>
+    </section>
+  }
+</section>

@@ -1,0 +1,119 @@
+<section class="category-page">
+	<div class="category-heading">
+		<div>
+			<p class="page-kicker">Workspace setup</p>
+			<h1>Status master</h1>
+			<p class="page-intro">Keep enquiry stages clear so your team always knows what happens next.</p>
+		</div>
+		<span class="record-count">{{ statusList().length }} statuses</span>
+	</div>
+
+	<div class="row g-4 align-items-start">
+		<div class="col-12 col-lg-7">
+			<div class="card category-card border-0">
+				<div class="card-header">
+					<div>
+						<span class="card-label">Directory</span>
+						<h2>Status records</h2>
+					</div>
+					<span class="header-icon" aria-hidden="true">&#9776;</span>
+				</div>
+				<div class="card-body">
+					<div class="table-wrap">
+						<table class="table category-table align-middle mb-0">
+							<thead>
+								<tr>
+									<th scope="col">Status ID</th>
+									<th scope="col">Status name</th>
+									<th scope="col">Is active</th>
+									<th scope="col" class="text-end">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for (item of statusList(); track item.statusId) {
+									<tr>
+										<td class="category-id">{{ item.statusId }}</td>
+										<td class="category-name">{{ item.statusName }}</td>
+										<td>
+											<app-status-badge
+												[isActive]="item.isActive"
+												(badgeClick)="onStatusBadgeClick(item)"
+											/>
+										</td>
+										<td class="text-end">
+											<div class="table-actions">
+												<button class="action-button edit-button" type="button" aria-label="Edit status" (click)="onEditStatus(item)">
+													<span class="action-icon edit-icon" aria-hidden="true"></span>
+													<span>Edit</span>
+												</button>
+												<button class="action-button delete-button" type="button" aria-label="Delete status" (click)="onDeleteStatus(item.statusId)">
+													<span class="action-icon delete-icon" aria-hidden="true"></span>
+													<span>Delete</span>
+												</button>
+											</div>
+										</td>
+									</tr>
+								} @empty {
+									<tr>
+										<td class="empty-state-cell" colspan="4">
+											<div class="empty-state">
+												<span class="empty-state-icon" aria-hidden="true">+</span>
+												<strong>No statuses yet</strong>
+												<span>Add your first status using the form.</span>
+											</div>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+					<div class="table-footer">
+						<span>{{ statusList().length }} statuses available</span>
+						<span class="footer-dot"></span>
+						<span>Last synced just now</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 col-lg-5">
+			<div class="card category-card border-0">
+				<div class="card-header">
+					<div>
+						<span class="card-label">Manage</span>
+						<h2>{{ isEditMode() ? 'Edit status' : 'Add status' }}</h2>
+					</div>
+					<span class="header-icon" aria-hidden="true">&#43;</span>
+				</div>
+				<div class="card-body form-card-body">
+					<form class="category-form">
+						@if (isEditMode()) {
+							<span class="field-hint status-id-reference">Status ID: #{{ newStatusObj.statusId }}</span>
+						}
+
+						<div class="form-field">
+							<label for="statusName">Status name <span>*</span></label>
+							<input id="statusName" name="statusName" [(ngModel)]="newStatusObj.statusName" type="text" placeholder="e.g. New enquiry" [readonly]="isEditMode() && newStatusObj.isSystemDefault" />
+						</div>
+
+						<div class="form-field">
+							<label for="isActive">Is active</label>
+							<div class="status-toggle-row">
+								<mat-slide-toggle id="isActive" name="isActive" [(ngModel)]="newStatusObj.isActive" [class.is-active]="newStatusObj.isActive">
+									{{ newStatusObj.isActive ? 'Active' : 'Inactive' }}
+								</mat-slide-toggle>
+							</div>
+						</div>
+
+						<div class="form-actions">
+							<button class="btn btn-outline-secondary reset-button" type="button" (click)="resetForm()">Clear</button>
+							<button class="btn save-button" type="button" (click)="onSaveStatus()">
+								<span aria-hidden="true">&#43;</span> {{ isEditMode() ? 'Update status' : 'Save status' }}
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

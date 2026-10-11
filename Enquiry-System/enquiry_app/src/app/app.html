@@ -1,0 +1,60 @@
+<nav class="app-navbar navbar navbar-expand-lg" aria-label="Main navigation">
+  <div class="container-fluid navbar-inner">
+    <a class="navbar-brand" [routerLink]="isLoggedIn() ? null : '/enquiry'">
+      <span class="brand-symbol" aria-hidden="true">
+        <span class="brand-symbol-dot"></span>
+        <span class="brand-symbol-line"></span>
+      </span>
+      <span>
+        <strong>Enquiry <small>DESK</small></strong>
+      </span>
+    </a>
+
+    <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse" id="mainNavigation" [class.logged-out]="!isLoggedIn()">
+      <ul class="navbar-nav main-nav mb-2 mb-lg-0">
+        @if (isLoggedIn()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/enquiries" routerLinkActive="active">
+              <span class="nav-icon nav-icon-list" aria-hidden="true"></span> Enquiry list
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/categories" routerLinkActive="active">
+              <span class="nav-icon nav-icon-grid" aria-hidden="true"></span> Category master
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin/statuses" routerLinkActive="active">
+              <span class="nav-icon nav-icon-status" aria-hidden="true"></span> Status master
+            </a>
+          </li>
+        }
+      </ul>
+
+      <div class="navbar-actions">
+        @if (isLoggedIn()) {
+          <a class="admin-profile" routerLink="/admin/login" aria-label="Open admin workspace options">
+            <span class="profile-avatar" aria-hidden="true">A</span>
+            <span class="profile-copy"><strong>Admin</strong><small>Workspace</small></span>
+          </a>
+        } @else {
+          <a class="admin-access-link" routerLink="/admin/login">
+            <span class="admin-access-mark" aria-hidden="true"></span>
+            <span>Admin portal</span>
+            <span class="admin-access-arrow" aria-hidden="true">&#8599;</span>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="app-content">
+  <router-outlet></router-outlet>
+</main>
+
+<app-confirmation-dialog></app-confirmation-dialog>

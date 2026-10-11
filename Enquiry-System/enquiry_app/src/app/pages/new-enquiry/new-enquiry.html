@@ -1,0 +1,228 @@
+<section class="enquiry-page portal-page">
+	<div class="portal-hero">
+		<div class="portal-hero-copy">
+			<p class="page-kicker">Customer support</p>
+			<h1>How can we help you today?</h1>
+			<p>Ask a question, report an issue, or check progress on a request you have already sent.</p>
+			<div class="portal-categories" aria-label="Available enquiry categories">
+				@for (category of activeCategories; track category.categoryId) {
+					<span>{{ category.categoryName }}</span>
+				}
+			</div>
+		</div>
+	</div>
+
+	<div class="portal-tabs" role="tablist" aria-label="Customer enquiry options">
+		<button id="tab-submit" type="button" role="tab" [class.active]="activePortalTab() === 'submit'" [attr.aria-selected]="activePortalTab() === 'submit'" aria-controls="new-enquiry" (click)="selectPortalTab('submit')">Submit request</button>
+		<button id="tab-track" type="button" role="tab" [class.active]="activePortalTab() === 'track'" [attr.aria-selected]="activePortalTab() === 'track'" aria-controls="track-enquiry" (click)="selectPortalTab('track')">Track status</button>
+	</div>
+
+	@if (activePortalTab() === 'submit') {
+	<section class="portal-section" id="new-enquiry" role="tabpanel" aria-labelledby="tab-submit" tabindex="0">
+		<div class="enquiry-heading">
+			<div>
+				<p class="page-kicker">New enquiry</p>
+				<h2 id="new-enquiry-heading">Tell us what you need help with</h2>
+				<p class="page-intro">Share a few details and we'll get back to you within 24 hours.</p>
+			</div>
+			<span class="record-count">Customer form</span>
+		</div>
+
+	<div class="card enquiry-card border-0">
+		<div class="card-header">
+			<div>
+				<span class="card-label">Enquiry details</span>
+				<h2>Customer request</h2>
+			</div>
+			<span class="header-icon" aria-hidden="true">&#9993;</span>
+		</div>
+
+		<div class="card-body form-card-body">
+			<form class="enquiry-form" [formGroup]="enquiryForm" (ngSubmit)="onSubmit()">
+				@if (apiError()) {
+					<p class="request-error" role="alert">{{ apiError() }}</p>
+				}
+				<div class="form-section-heading">
+					<span class="section-number">01</span>
+					<div>
+						<h3>Customer information</h3>
+						<p>Start with your contact details.</p>
+					</div>
+				</div>
+
+				<div class="form-grid form-grid-two">
+					<div class="form-field form-field-wide">
+						<label for="customerName">Your name <span>*</span></label>
+						<mat-form-field appearance="outline" subscriptSizing="dynamic">
+							<input matInput id="customerName" formControlName="customerName" type="text" placeholder="e.g. Suraj Jagadeesh" (input)="saveEnquiryDraft()" />
+						</mat-form-field>
+					</div>
+
+					<div class="form-field">
+						<label for="customerPhone">Your phone <span>*</span></label>
+						<mat-form-field appearance="outline" subscriptSizing="dynamic">
+							<input matInput id="customerPhone" formControlName="customerPhone" type="tel" placeholder="e.g. +91 98765 43210" (input)="saveEnquiryDraft()" />
+						</mat-form-field>
+					</div>
+
+					<div class="form-field form-field-wide">
+						<label for="customerEmail">Your email <span>*</span></label>
+						<mat-form-field appearance="outline" subscriptSizing="dynamic">
+							<input matInput id="customerEmail" formControlName="customerEmail" type="email" placeholder="e.g. suraj@gmail.com" (input)="saveEnquiryDraft()" />
+						</mat-form-field>
+					</div>
+				</div>
+
+				<div class="form-section-heading section-heading-spaced">
+					<span class="section-number">02</span>
+					<div>
+						<h3>Request details</h3>
+						<p>Tell us what you need help with.</p>
+					</div>
+				</div>
+
+				<div class="form-grid form-grid-two">
+					<div class="form-field">
+						<label for="categoryId">Category <span>*</span></label>
+						<mat-form-field appearance="outline" class="material-select-field" subscriptSizing="dynamic">
+							<mat-select id="categoryId" formControlName="categoryId" aria-label="Category" placeholder="Select a category" (selectionChange)="saveEnquiryDraft()">
+								<mat-option value="" disabled>Select a category</mat-option>
+							@for (category of activeCategories; track category.categoryId) {
+								<mat-option [value]="category.categoryId.toString()">{{ category.categoryName }}</mat-option>
+							}
+							</mat-select>
+						</mat-form-field>
+					</div>
+
+					<div class="form-field">
+						<label for="enquiryType">Enquiry type <span>*</span></label>
+						<mat-form-field appearance="outline" class="material-select-field" subscriptSizing="dynamic">
+							<mat-select id="enquiryType" formControlName="enquiryType" aria-label="Enquiry type" placeholder="Select enquiry type" (selectionChange)="saveEnquiryDraft()">
+								<mat-option value="" disabled>Select enquiry type</mat-option>
+								<mat-option value="General">General</mat-option>
+								<mat-option value="Sales">Sales</mat-option>
+								<mat-option value="Technical">Technical</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+
+				<div class="form-grid">
+					<div class="form-field">
+						<label for="message">Message <span>*</span></label>
+					<mat-form-field appearance="outline" subscriptSizing="dynamic">
+						<textarea matInput id="message" formControlName="message" rows="4" placeholder="Describe your enquiry in detail..." (input)="saveEnquiryDraft()"></textarea>
+					</mat-form-field>
+					</div>
+				</div>
+
+				<div class="form-actions">
+					<button class="btn btn-outline-secondary reset-button" type="button" (click)="resetForm()">Clear form</button>
+					<button class="btn save-button" type="submit" [disabled]="submitting()">
+						{{ submitting() ? 'Submitting...' : 'Submit enquiry' }}
+						@if (!submitting()) { <span class="submit-arrow" aria-hidden="true">&#8594;</span> }
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	</section>
+	}
+
+	@if (activePortalTab() === 'track') {
+	<section class="portal-section tracking-section" id="track-enquiry" role="tabpanel" aria-labelledby="tab-track" tabindex="0">
+		<div class="enquiry-heading">
+			<div>
+				<p class="page-kicker">Request progress</p>
+				<h2 id="track-enquiry-heading">Track your enquiry</h2>
+				<p class="page-intro">Enter the enquiry ID from your confirmation and the email used to submit it.</p>
+			</div>
+		</div>
+		<div class="card enquiry-card border-0 track-card">
+			<div class="card-header">
+				<div>
+					<span class="card-label">Status lookup</span>
+					<h2>Find your request</h2>
+				</div>
+				<span class="header-icon" aria-hidden="true">&#8981;</span>
+			</div>
+			<div class="card-body track-card-body">
+				<form class="track-form" (ngSubmit)="lookupEnquiry($event)">
+					<div class="tracking-fields">
+						<div class="form-field">
+							<label for="trackingId">Enquiry ID <span>*</span></label>
+							<mat-form-field appearance="outline" subscriptSizing="dynamic">
+								<input matInput id="trackingId" name="trackingId" type="text" placeholder="e.g. ENQ-0001" [(ngModel)]="trackingForm.enquiryId" (ngModelChange)="saveTrackingDraft()" required />
+							</mat-form-field>
+						</div>
+						<div class="form-field">
+							<label for="trackingEmail">Email address <span>*</span></label>
+							<mat-form-field appearance="outline" subscriptSizing="dynamic">
+								<input matInput id="trackingEmail" name="trackingEmail" type="email" placeholder="The email used to submit" [(ngModel)]="trackingForm.email" (ngModelChange)="saveTrackingDraft()" required />
+							</mat-form-field>
+						</div>
+					</div>
+					<button class="btn save-button" type="submit" [disabled]="tracking()">{{ tracking() ? 'Checking...' : 'Check status' }} <span aria-hidden="true">&#8594;</span></button>
+					@if (tracking()) {
+						<p class="request-loading" role="status">Looking up your enquiry...</p>
+					}
+				</form>
+				@if (trackingError()) {
+					<p class="tracking-error" role="alert">{{ trackingError() }}</p>
+				}
+				@if (trackingResult(); as result) {
+					<div class="tracking-result" aria-live="polite">
+						<div class="tracking-result-heading">
+							<div>
+								<span class="tracking-result-label">Enquiry</span>
+								<strong>ENQ-{{ result.enquiryId.toString().padStart(4, '0') }}</strong>
+							</div>
+							<div class="tracking-status">
+								<span class="tracking-result-label">Status</span>
+								<span class="status-pill" [class]="getTrackingStatusClass(result.statusId)">{{ getTrackingStatusName(result.statusId) }}</span>
+							</div>
+						</div>
+						<dl class="tracking-facts">
+							<div><dt>Category</dt><dd>{{ getTrackingCategoryName(result.categoryId) }}</dd></div>
+							<div><dt>Enquiry type</dt><dd>{{ result.enquiryType }}</dd></div>
+							<div><dt>Submitted</dt><dd>{{ result.createdDate | date: 'mediumDate' }}</dd></div>
+							<div><dt>Last updated</dt><dd>{{ getTrackingLastUpdated(result) }}</dd></div>
+						</dl>
+						@if (result.resolutionNotes?.trim()) {
+							<div class="tracking-response">
+								<h3>Admin response</h3>
+								<p>{{ result.resolutionNotes }}</p>
+							</div>
+						}
+					</div>
+				}
+			</div>
+		</div>
+	</section>
+	}
+
+	<!-- Success Modal -->
+	@if (showSuccessModal) {
+		<div class="modal-overlay" (click)="closeModal()">
+			<div class="modal-content" (click)="$event.stopPropagation()">
+				<div class="modal-header">
+					<span class="modal-icon success">&#10004;</span>
+					<h2>Enquiry Submitted Successfully!</h2>
+				</div>
+				<div class="modal-body">
+					<p class="modal-message">
+						Thank you, <strong>{{ submittedCustomerName }}</strong>! Your enquiry <strong>{{ submittedEnquiryId }}</strong> has been submitted successfully.
+					</p>
+					<p class="modal-submessage">
+						Our team will review it and get back to you within <strong>24 hours</strong>.
+					</p>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-track" type="button" (click)="copySubmittedEnquiryId()">Copy ID</button>
+					<button class="btn btn-track" type="button" (click)="trackSubmittedEnquiry()">Track this enquiry</button>
+					<button class="btn btn-primary" (click)="closeModal()">Got it, thanks!</button>
+				</div>
+			</div>
+		</div>
+	}
+</section>

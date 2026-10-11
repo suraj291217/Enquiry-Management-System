@@ -1,0 +1,166 @@
+:host {
+  --detail-ink: #18313b;
+  --detail-muted: #718286;
+  --detail-line: #e4ece9;
+  --detail-green: #287c79;
+  background: #f4f8f6;
+  color: var(--detail-ink);
+  display: block;
+  min-height: calc(100vh - 76px);
+}
+
+.detail-page {
+  margin: 0 auto;
+  max-width: 1040px;
+  padding: 40px 32px 56px;
+}
+
+.back-link {
+  color: var(--detail-green);
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 28px;
+  text-decoration: none;
+}
+
+.back-link:hover { text-decoration: underline; }
+
+.detail-heading {
+  align-items: end;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 26px;
+}
+
+.page-kicker,
+.section-label {
+  color: var(--detail-green);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.detail-heading h1,
+.not-found h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.page-intro {
+  color: var(--detail-muted);
+  font-size: 0.86rem;
+  margin: 9px 0 0;
+}
+
+.status-pill {
+  background: #e2f1ec;
+  border-radius: 20px;
+  color: var(--detail-green);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 8px 13px;
+}
+
+.detail-layout {
+  background: #fff;
+  border: 1px solid var(--detail-line);
+  border-radius: 10px;
+  display: grid;
+  gap: 0 32px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  padding: 28px;
+}
+
+.detail-section { min-width: 0; }
+.detail-section h2 { font-size: 1rem; margin: 0 0 12px; }
+
+.customer-section a {
+  color: var(--detail-green);
+  display: block;
+  font-size: 0.82rem;
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+}
+
+.detail-facts {
+  border-bottom: 1px solid var(--detail-line);
+  border-top: 1px solid var(--detail-line);
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: 18px 0;
+}
+
+.detail-facts dt { color: var(--detail-muted); font-size: 0.68rem; }
+.detail-facts dd { font-size: 0.82rem; margin: 4px 0 0; overflow-wrap: anywhere; }
+.message-section, .response-section { padding-top: 24px; }
+.customer-message { line-height: 1.6; margin: 0; white-space: pre-wrap; }
+
+.form-field { margin-top: 16px; }
+.form-field label { display: block; font-size: 0.76rem; font-weight: 700; margin-bottom: 7px; }
+.form-field mat-form-field {
+  --mat-form-field-container-text-font: inherit;
+  --mat-form-field-container-text-size: 0.8rem;
+  --mat-form-field-outlined-outline-color: #dce8e4;
+  --mat-form-field-outlined-hover-outline-color: #9abdb3;
+  --mat-form-field-outlined-focus-outline-color: #287c79;
+  --mat-form-field-outlined-focus-label-text-color: #287c79;
+  --mat-select-trigger-text-font: inherit;
+  --mat-select-trigger-text-size: 0.8rem;
+  display: block;
+  width: 100%;
+}
+.form-field textarea {
+  background: #fbfdfc;
+  border: 1px solid #dce8e4;
+  border-radius: 7px;
+  box-sizing: border-box;
+  color: var(--detail-ink);
+  font: inherit;
+  font-size: 0.82rem;
+  min-height: 110px;
+  padding: 11px 12px;
+  resize: vertical;
+  width: 100%;
+}
+
+.trash-notice {
+  align-self: start;
+  background: #fff6e5;
+  color: #795710;
+  font-size: 0.82rem;
+  grid-column: 1 / -1;
+  margin: 24px 0 0;
+  padding: 13px 15px;
+}
+
+.detail-actions { display: flex; gap: 10px; justify-content: flex-end; padding-top: 18px; }
+.save-button, .trash-button {
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 700;
+  min-height: 40px;
+  padding: 0 16px;
+}
+
+.save-button { background: var(--detail-green); color: #fff; }
+.trash-button { background: #fff; border: 1px solid #e2c7bd; color: #a34f38; }
+.not-found { background: #fff; border: 1px solid var(--detail-line); border-radius: 10px; padding: 32px; }
+.not-found .back-link { margin: 22px 0 0; }
+
+@media (max-width: 680px) {
+  .detail-page { padding: 28px 18px 40px; }
+  .detail-heading { align-items: start; flex-direction: column; gap: 16px; }
+  .detail-layout { grid-template-columns: minmax(0, 1fr); padding: 20px; }
+  .detail-facts { margin-top: 22px; }
+  .detail-actions { flex-wrap: wrap; }
+  .detail-actions button { flex: 1; }
+}

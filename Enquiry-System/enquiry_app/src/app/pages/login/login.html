@@ -1,0 +1,142 @@
+<main class="login-page">
+	<section class="login-shell" aria-label="Admin sign in">
+		<div class="brand-panel">
+			<div class="brand-mark" aria-hidden="true">
+				<span class="brand-mark-dot"></span>
+				<span class="brand-mark-line"></span>
+			</div>   
+
+			<div class="brand-copy">
+				<p class="eyebrow">Enquiry desk</p>
+				<h1>Keep every conversation moving.</h1>
+				<p class="brand-description">
+					A clear view of every customer question, from the first message to the final response.
+				</p>
+			</div>
+
+			<div class="brand-footer">
+				<span class="status-indicator"></span>
+				<span>Workspace is ready for your team</span>
+			</div>
+		</div>
+
+		<div class="form-panel">
+			<div class="form-content">
+				<div class="mobile-brand">
+					<div class="brand-mark brand-mark-dark" aria-hidden="true">
+						<span class="brand-mark-dot"></span>
+						<span class="brand-mark-line"></span>
+					</div>
+					<span>Enquiry desk</span>
+				</div>
+
+				@if (currentLoggedUser) {
+					<div class="form-heading">
+						<p class="eyebrow">Already signed in</p>
+						<h2>You're logged in</h2>
+						<p>Continue managing your team's enquiries or sign out.</p>
+					</div>
+
+					<div class="session-stats" aria-label="Enquiry activity snapshot">
+						@for (stat of activityStats(); track stat.label) {
+							<div class="session-stat">
+								<span class="session-stat-label">{{ stat.label }}</span>
+								<strong>{{ stat.count }} <small>{{ stat.detail }}</small></strong>
+							</div>
+						}
+					</div>
+
+					<div class="logged-in-actions">
+						<button class="sign-in-button" type="button" (click)="goToDashboard()">
+							<span>Go to dashboard</span>
+							<span class="button-arrow" aria-hidden="true">&#8594;</span>
+						</button>
+
+						<button class="logout-button" type="button" (click)="onLogout()">
+							<span>Sign out</span>
+						</button>
+					</div>
+
+					<nav class="session-quick-links" aria-label="Quick workspace links">
+						<span>Jump straight to:</span>
+						<a routerLink="/admin/enquiries">New enquiries</a>
+						<a routerLink="/admin/categories">Category setup</a>
+					</nav>
+
+					<p class="security-note session-note">
+						<span class="lock-icon" aria-hidden="true">&#9679;</span>
+						<span class="session-copy">
+							<span>Signed in as <strong>{{ currentLoggedUser }}</strong></span>
+							<small>Session started: {{ sessionStartedLabel }}</small>
+						</span>
+					</p>
+				} @else {
+					<div class="form-heading">
+						<p class="eyebrow">Admin portal</p>
+						<h2>Welcome back</h2>
+						<p>Sign in to manage your team's enquiries.</p>
+					</div>
+
+					<form class="login-form" (ngSubmit)="onLogin()" novalidate>
+						<div class="form-field">
+							<label for="email">Work email</label>
+							<input
+								id="email"
+								[(ngModel)]="userLogin.userName"
+								name="userName"
+								type="email"
+								placeholder="you@gmail.com"
+								autocomplete="email"
+								[class.input-error]="emailError"
+								(input)="onEmailChange()"
+							/>
+							@if (emailError) {
+								<span class="field-error-message">{{ emailError }}</span>
+							}
+						</div>
+
+						<div class="form-field">
+							<div class="field-label-row">
+								<label for="password">Password</label>
+								<a href="#forgot-password">Forgot password?</a>
+							</div>
+							<input
+								id="password"
+								[(ngModel)]="userLogin.password"
+								name="password"
+								type="password"
+								placeholder="Enter your password"
+								autocomplete="current-password"
+								(input)="onPasswordChange()"
+							/>
+						</div>
+
+						@if (loginError) {
+							<div class="form-alert-error">
+								<span>{{ loginError }}</span>
+							</div>
+						}
+
+						<label class="remember-control">
+							<input type="checkbox" />
+							<span class="custom-checkbox" aria-hidden="true"></span>
+							<span>Keep me signed in</span>
+						</label>
+
+						<button class="sign-in-button" type="submit">
+							<span>Sign in to dashboard</span>
+							<span class="button-arrow" aria-hidden="true">&#8594;</span>
+						</button>
+					</form>
+
+					<p class="security-note">
+						<span class="lock-icon" aria-hidden="true">&#9679;</span>
+						Your workspace is protected with secure access.
+					</p>
+
+					<p class="form-footer">Need access? <a href="#contact-admin">Contact your administrator</a></p>
+				}
+			</div>
+		</div>
+	</section>
+</main>

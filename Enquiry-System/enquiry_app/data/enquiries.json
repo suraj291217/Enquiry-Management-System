@@ -1,0 +1,89 @@
+[
+  {
+    "customerName": "Suraj Jagadeesh",
+    "customerEmail": "suraj@gmail.com",
+    "customerPhone": "9812373843",
+    "categoryId": 1,
+    "statusId": 3,
+    "enquiryType": "General",
+    "enquiryDetails": "api testing",
+    "enquiryId": 1,
+    "createdDate": "2026-10-08T05:33:47.729Z",
+    "resolutionNotes": "thanks for informing",
+    "updatedDate": "2026-10-08T06:21:18.426Z"
+  },
+  {
+    "customerName": "Dilpreet Singh",
+    "customerEmail": "dilpreet@gmail.com",
+    "customerPhone": "8127312831",
+    "categoryId": 3,
+    "statusId": 2,
+    "enquiryType": "Technical",
+    "enquiryDetails": "module xyz is not working",
+    "enquiryId": 2,
+    "createdDate": "2026-10-08T05:41:06.069Z",
+    "resolutionNotes": "",
+    "updatedDate": "2026-10-08T12:01:13.402Z"
+  },
+  {
+    "customerName": "Sunil",
+    "customerEmail": "sunil@gmail.com",
+    "customerPhone": "8127312831",
+    "categoryId": 1,
+    "statusId": 1,
+    "enquiryType": "General",
+    "enquiryDetails": "testing app",
+    "enquiryId": 3,
+    "createdDate": "2026-10-08T05:43:56.844Z"
+  },
+  {
+    "customerName": "Arjun Walia",
+    "customerEmail": "arjun@gmail.com",
+    "customerPhone": "3127391322",
+    "categoryId": 2,
+    "statusId": 1,
+    "enquiryType": "General",
+    "enquiryDetails": "testing api in app",
+    "enquiryId": 4,
+    "createdDate": "2026-10-08T05:44:25.374Z"
+  },
+  {
+    "customerName": "Akash",
+    "customerEmail": "akash@gmail.com",
+    "customerPhone": "1234567890",
+    "categoryId": 2,
+    "statusId": 1,
+    "enquiryType": "Technical",
+    "enquiryDetails": "what is todays topic",
+    "enquiryId": 5,
+    "createdDate": "2026-10-08T05:44:50.859Z",
+    "resolutionNotes": "they'll inform today",
+    "updatedDate": "2026-10-08T05:47:33.767Z"
+  },
+  {
+    "customerName": "Akhil Saini",
+    "customerEmail": "akhil@gmail.com",
+    "customerPhone": "9812373843",
+    "categoryId": 3,
+    "statusId": 3,
+    "enquiryType": "Technical",
+    "enquiryDetails": "amount has not been reflected in my bank account",
+    "enquiryId": 6,
+    "createdDate": "2026-10-08T05:45:35.252Z",
+    "resolutionNotes": "we have fixed it, thankyou for being patient",
+    "updatedDate": "2026-10-08T07:30:55.058Z"
+  },
+  {
+    "customerName": "Siva",
+    "customerEmail": "siva@gmail.com",
+    "customerPhone": "9812373843",
+    "categoryId": 1,
+    "statusId": 3,
+    "enquiryType": "Technical",
+    "enquiryDetails": "like this module xyz is not working",
+    "enquiryId": 7,
+    "createdDate": "2026-10-10T15:54:43.486Z",
+    "resolutionNotes": "thanks for informing thanks siva and shreyas",
+    "updatedDate": "2026-10-10T15:57:35.091Z"
+  }
+]

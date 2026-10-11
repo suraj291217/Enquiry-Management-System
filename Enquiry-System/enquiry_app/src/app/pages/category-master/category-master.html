@@ -1,0 +1,132 @@
+<section class="category-page">
+  <div class="category-heading">
+    <div>
+      <p class="page-kicker">Workspace setup</p>
+      <h1>Category master</h1>
+      <p class="page-intro">Organise customer enquiries so every request reaches the right team.</p>
+    </div>
+    <span class="record-count">{{ categoryList().length }} categories</span>
+  </div>
+
+  <div class="row g-4 align-items-start">
+    <div class="col-12 col-lg-7">
+      <div class="card category-card border-0">
+        <div class="card-header">
+          <div>
+            <span class="card-label">Directory</span>
+            <h2>Category records</h2>
+          </div>
+          <span class="header-icon" aria-hidden="true">&#9776;</span>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table class="table category-table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">SR No</th>
+                  <th scope="col">Category name</th>
+                  <th scope="col">Status</th>
+                  <th scope="col" class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of categoryList(); track $index) {
+                  <tr>
+                    <td class="category-id">{{ $index + 1 }}</td>
+                    <td class="category-name">{{ item.categoryName }}</td>
+                    <td>
+                      <app-status-badge
+                        [isActive]="item.isActive"
+                        (badgeClick)="onStatusBadgeClick(item)"
+                      />
+                    </td>
+                    <td class="text-end">
+                      <div class="table-actions">
+                        <button class="action-button edit-button" type="button" aria-label="Edit category" (click)="onEditCategory(item)">
+                          <span class="action-icon edit-icon" aria-hidden="true"></span>
+                          <span>Edit</span>
+                        </button>
+                        <button class="action-button delete-button" type="button" aria-label="Delete category" (click)="onDeleteCategory(item.categoryId)">
+                          <span class="action-icon delete-icon" aria-hidden="true"></span>
+                          <span>Delete</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td class="empty-state-cell" colspan="4">
+                      <div class="empty-state">
+                        <span class="empty-state-icon" aria-hidden="true">+</span>
+                        <strong>No categories yet</strong>
+                        <span>Add your first category using the form.</span>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span>{{ categoryList().length }} categories available</span>
+            <span class="footer-dot"></span>
+            <span>Last synced just now</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-5">
+      <div class="card category-card border-0">
+        <div class="card-header">
+          <div>
+            <span class="card-label">Manage</span>
+            <h2>{{ isEditMode() ? 'Edit category' : 'Add category' }}</h2>
+          </div>
+          <span class="header-icon" aria-hidden="true">&#43;</span>
+        </div>
+        <div class="card-body form-card-body">
+          <form class="category-form">
+            <!-- <div class="form-field">
+              <label for="categoryId">Category ID</label>
+              <input
+                id="categoryId"
+                name="categoryId"
+                [(ngModel)]="newCategoryObj.categoryId"
+                type="number"
+                placeholder="Enter category ID"
+              />
+            </div> -->
+
+            <div class="form-field">
+              <label for="categoryName">Category name <span>*</span></label>
+              <input
+                id="categoryName"
+                name="categoryName"
+                [(ngModel)]="newCategoryObj.categoryName"
+                type="text"
+                placeholder="e.g. Product enquiry"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="isActive">Status</label>
+              <div class="status-toggle-row">
+                <mat-slide-toggle id="isActive" name="isActive" [(ngModel)]="newCategoryObj.isActive" [class.is-active]="newCategoryObj.isActive">
+                  {{ newCategoryObj.isActive ? 'Active' : 'Inactive' }}
+                </mat-slide-toggle>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-outline-secondary reset-button" type="button" (click)="resetForm()">Clear</button>
+              <button class="btn save-button" type="button" (click)="onSaveCategory()">
+                <span aria-hidden="true">&#43;</span> {{ isEditMode() ? 'Update category' : 'Save category' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
