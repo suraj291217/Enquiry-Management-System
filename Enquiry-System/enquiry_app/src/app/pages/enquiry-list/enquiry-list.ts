@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IEnquiry } from '../../model/enquiry.model';
@@ -8,11 +8,12 @@ import { StatusService } from '../../services/status.service';
 import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
-  imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule],
+  imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatTableModule],
   selector: 'app-enquiry-list',
   styleUrl: './enquiry-list.css',
   templateUrl: './enquiry-list.html',
@@ -30,6 +31,8 @@ export class EnquiryList {
   readonly activeStatuses = computed(() => this.statuses()
     .filter(status => status.isActive)
     .sort((first, second) => (first.displayOrder ?? 0) - (second.displayOrder ?? 0)));
+  readonly displayedColumns = ['enquiry', 'customer', 'category', 'status', 'submitted', 'actions'];
+  readonly dataSource = new MatTableDataSource<IEnquiry>([]);
   searchTerm = '';
   recordView: 'open' | 'all' | 'trash' = 'open';
   selectedStatusId = '';
@@ -37,6 +40,18 @@ export class EnquiryList {
   pageIndex = 0;
   pageSize = 10;
   readonly pageSizeOptions = [5, 10, 25];
+
+  constructor() {
+    effect(() => {
+      this.enquiries();
+      this.dataSource.data = this.filteredEnquiries;
+    });
+  }
+
+  @ViewChild(MatPaginator)
+  set paginator(paginator: MatPaginator | undefined) {
+    this.dataSource.paginator = paginator ?? null;
+  }
 
   get filteredEnquiries(): IEnquiry[] {
     const search = this.searchTerm.trim().toLowerCase();
@@ -52,14 +67,13 @@ export class EnquiryList {
       .sort((first, second) => second.createdDate.localeCompare(first.createdDate));
   }
 
-  get paginatedEnquiries(): IEnquiry[] {
-    const start = this.currentPageIndex * this.pageSize;
-    return this.filteredEnquiries.slice(start, start + this.pageSize);
-  }
-
   get currentPageIndex(): number {
     const lastPageIndex = Math.max(0, Math.ceil(this.filteredEnquiries.length / this.pageSize) - 1);
     return Math.min(this.pageIndex, lastPageIndex);
+  }
+
+  get visibleEnquiryCount(): number {
+    return Math.min(this.pageSize, Math.max(0, this.filteredEnquiries.length - this.currentPageIndex * this.pageSize));
   }
 
   onPageChange(event: PageEvent): void {
@@ -69,6 +83,8 @@ export class EnquiryList {
 
   resetPagination(): void {
     this.pageIndex = 0;
+    this.dataSource.data = this.filteredEnquiries;
+    this.dataSource.paginator?.firstPage();
   }
 
   get emptyStateTitle(): string {

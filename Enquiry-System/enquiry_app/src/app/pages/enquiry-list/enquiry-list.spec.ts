@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EnquiryList } from './enquiry-list';
 import { EnquiryService } from '../../services/enquiry.service';
 import { StatusService } from '../../services/status.service';
-import { PageEvent } from '@angular/material/paginator';
 
 describe('EnquiryList', () => {
   let component: EnquiryList;
@@ -74,7 +73,7 @@ describe('EnquiryList', () => {
     expect(component.filteredEnquiries).toHaveLength(0);
   });
 
-  it('paginates the filtered enquiry list and resets to the first page when filters change', () => {
+  it('paginates the Material table data source and resets to the first page when filters change', async () => {
     for (let index = 0; index < 12; index++) {
       enquiryService.addEnquiry({
         customerName: `Customer ${index + 1}`,
@@ -87,16 +86,30 @@ describe('EnquiryList', () => {
       });
     }
 
-    expect(component.paginatedEnquiries).toHaveLength(10);
-    const firstPageIds = component.paginatedEnquiries.map(enquiry => enquiry.enquiryId);
-    component.onPageChange({ pageIndex: 1, pageSize: 10, length: 12 } as PageEvent);
-    expect(component.paginatedEnquiries).toHaveLength(2);
-    expect(component.paginatedEnquiries.every(enquiry => !firstPageIds.includes(enquiry.enquiryId))).toBe(true);
+    fixture.detectChanges();
+    await fixture.whenStable();
 
+    expect(component.dataSource.data).toHaveLength(12);
+    expect(fixture.nativeElement.querySelectorAll('tr.mat-mdc-row')).toHaveLength(10);
+    const paginator = component.dataSource.paginator;
+    if (!paginator) throw new Error('Expected the enquiry table paginator to be connected');
+    paginator.nextPage();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelectorAll('tr.mat-mdc-row')).toHaveLength(2);
+    expect(component.pageIndex).toBe(1);
     component.searchTerm = 'Customer 1';
     component.resetPagination();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
     expect(component.pageIndex).toBe(0);
-    expect(component.paginatedEnquiries.every(enquiry => enquiry.customerName.includes('Customer 1'))).toBe(true);
+    expect(component.dataSource.paginator?.pageIndex).toBe(0);
+    const visibleCustomers = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.customer-name'))
+      .map(element => element.textContent ?? '');
+    expect(visibleCustomers.length).toBeGreaterThan(0);
+    expect(visibleCustomers.every((customer: string) => customer.includes('Customer 1'))).toBe(true);
   });
 
   it('applies a visible palette to statuses created in status master', () => {

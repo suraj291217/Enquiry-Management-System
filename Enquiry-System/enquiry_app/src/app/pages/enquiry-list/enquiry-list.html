@@ -60,44 +60,59 @@
 			</div>
 
 		<div class="table-wrap enquiry-table-wrap">
-			<table class="table category-table enquiry-table align-middle mb-0">
-			<thead>
-				<tr>
-					<th scope="col">Enquiry</th>
-					<th scope="col">Customer</th>
-					<th scope="col">Category</th>
-					<th scope="col">Status</th>
-					<th scope="col">Submitted</th>
-					<th scope="col"><span class="visually-hidden">Actions</span></th>
+			<table mat-table [dataSource]="dataSource" class="table category-table enquiry-table align-middle mb-0" aria-label="Enquiry records">
+				<ng-container matColumnDef="enquiry">
+					<th mat-header-cell *matHeaderCellDef scope="col">Enquiry</th>
+					<td mat-cell *matCellDef="let enquiry">
+						<button class="enquiry-code category-id" type="button" (click)="openDetails(enquiry)">{{ getEnquiryCode(enquiry) }}</button>
+					</td>
+				</ng-container>
+
+				<ng-container matColumnDef="customer">
+					<th mat-header-cell *matHeaderCellDef scope="col">Customer</th>
+					<td mat-cell *matCellDef="let enquiry">
+						<strong class="customer-name">{{ enquiry.customerName }}</strong>
+						<span class="customer-contact">{{ enquiry.customerEmail }} · {{ enquiry.customerPhone }}</span>
+					</td>
+				</ng-container>
+
+				<ng-container matColumnDef="category">
+					<th mat-header-cell *matHeaderCellDef scope="col">Category</th>
+					<td mat-cell *matCellDef="let enquiry">{{ getCategoryName(enquiry.categoryId) }}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="status">
+					<th mat-header-cell *matHeaderCellDef scope="col">Status</th>
+					<td mat-cell *matCellDef="let enquiry">
+						<span class="status-pill" [class]="getStatusClass(enquiry.statusId)" [ngStyle]="getStatusStyle(enquiry.statusId)">{{ getStatusName(enquiry.statusId) }}</span>
+					</td>
+				</ng-container>
+
+				<ng-container matColumnDef="submitted">
+					<th mat-header-cell *matHeaderCellDef scope="col">Submitted</th>
+					<td mat-cell *matCellDef="let enquiry">{{ enquiry.createdDate | date: 'mediumDate' }}</td>
+				</ng-container>
+
+				<ng-container matColumnDef="actions">
+					<th mat-header-cell *matHeaderCellDef scope="col"><span class="visually-hidden">Actions</span></th>
+					<td mat-cell *matCellDef="let enquiry" class="text-end">
+						<button class="action-button edit-button" type="button" (click)="openDetails(enquiry)">Review</button>
+					</td>
+				</ng-container>
+
+				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+				<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+				<tr class="mat-row" *matNoDataRow>
+					<td class="empty-state-cell" colspan="6">
+						<div class="empty-state">
+							<span class="empty-state-icon" aria-hidden="true">&#8226;</span>
+							<strong>{{ emptyStateTitle }}</strong>
+							<span>{{ emptyStateMessage }}</span>
+						</div>
+					</td>
 				</tr>
-			</thead>
-			<tbody>
-				@for (enquiry of paginatedEnquiries; track enquiry.enquiryId) {
-					<tr>
-						<td><button class="enquiry-code category-id" type="button" (click)="openDetails(enquiry)">{{ getEnquiryCode(enquiry) }}</button></td>
-						<td>
-							<strong class="customer-name">{{ enquiry.customerName }}</strong>
-							<span class="customer-contact">{{ enquiry.customerEmail }} · {{ enquiry.customerPhone }}</span>
-						</td>
-						<td>{{ getCategoryName(enquiry.categoryId) }}</td>
-						<td><span class="status-pill" [class]="getStatusClass(enquiry.statusId)" [ngStyle]="getStatusStyle(enquiry.statusId)">{{ getStatusName(enquiry.statusId) }}</span></td>
-						<td>{{ enquiry.createdDate | date: 'mediumDate' }}</td>
-						<td class="text-end"><button class="action-button edit-button" type="button" (click)="openDetails(enquiry)">Review</button></td>
-					</tr>
-				} @empty {
-					<tr>
-						<td class="empty-state-cell" colspan="6">
-							<div class="empty-state">
-								<span class="empty-state-icon" aria-hidden="true">&#8226;</span>
-								<strong>{{ emptyStateTitle }}</strong>
-								<span>{{ emptyStateMessage }}</span>
-							</div>
-						</td>
-					</tr>
-				}
-			</tbody>
-		</table>
-	</div>
+			</table>
+		</div>
 			@if (filteredEnquiries.length > 0) {
 				<mat-paginator
 					class="enquiry-paginator"
@@ -110,7 +125,7 @@
 				</mat-paginator>
 			}
 			<div class="table-footer">
-				<span>Showing {{ filteredEnquiries.length ? currentPageIndex * pageSize + 1 : 0 }}–{{ currentPageIndex * pageSize + paginatedEnquiries.length }} of {{ filteredEnquiries.length }} enquiries</span>
+				<span>Showing {{ filteredEnquiries.length ? currentPageIndex * pageSize + 1 : 0 }}–{{ currentPageIndex * pageSize + visibleEnquiryCount }} of {{ filteredEnquiries.length }} enquiries</span>
 				<span class="footer-dot"></span>
 				<span>{{ enquiries().length }} total records</span>
 			</div>

@@ -129,5 +129,16 @@
     "enquiryDetails": "testing dialog box",
     "enquiryId": 11,
     "createdDate": "2026-10-11T09:17:38.923Z"
+  },
+  {
+    "customerName": "Padma Prabhu",
+    "customerEmail": "padma@gmail.com",
+    "customerPhone": "788347372",
+    "categoryId": 3,
+    "statusId": 1,
+    "enquiryType": "Technical",
+    "enquiryDetails": "hello",
+    "enquiryId": 12,
+    "createdDate": "2026-10-12T06:25:11.818Z"
   }
 ]

@@ -103,6 +103,100 @@ app-root {
 	z-index: 1;
 }
 
+.enquiry-page .enquiry-table {
+	width: 100%;
+	background: #fff;
+	--mat-table-background-color: #fff;
+	--mat-table-header-headline-font: var(--bs-body-font-family);
+	--mat-table-header-headline-size: 0.64rem;
+	--mat-table-header-headline-weight: 700;
+	--mat-table-header-headline-color: #9aa8a8;
+	--mat-table-row-item-label-text-font: var(--bs-body-font-family);
+	--mat-table-row-item-label-text-size: 0.79rem;
+	--mat-table-row-item-label-text-weight: 400;
+	--mat-table-row-item-label-text-color: #18313b;
+	--mat-table-row-item-outline-color: #edf2f0;
+	--mat-table-header-container-height: 42px;
+	--mat-table-row-item-container-height: 70px;
+}
+
+.enquiry-page .enquiry-table .mat-mdc-header-cell {
+	background: #fff;
+	border-bottom: 1px solid #e4ece9;
+	color: #9aa8a8;
+	font-family: var(--bs-body-font-family);
+	font-size: 0.64rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	line-height: 1.3;
+	padding: 13px 10px;
+	text-transform: uppercase;
+}
+
+.enquiry-page .enquiry-table .mat-mdc-cell {
+	background: #fff;
+	border-bottom: 1px solid #edf2f0;
+	color: #18313b;
+	font-family: var(--bs-body-font-family);
+	font-size: 0.79rem;
+	line-height: 1.45;
+	padding: 16px 10px;
+}
+
+.enquiry-page .enquiry-table .mat-mdc-row {
+	transition: background-color 140ms ease;
+}
+
+.enquiry-page .enquiry-table .mat-mdc-row:hover .mat-mdc-cell {
+	background: #fbfdfc;
+}
+
+.enquiry-page .enquiry-table .mat-mdc-row:last-of-type .mat-mdc-cell {
+	border-bottom: 0;
+}
+
+.enquiry-page .enquiry-table .mat-column-enquiry {
+	width: 130px;
+}
+
+.enquiry-page .enquiry-table .mat-column-category,
+.enquiry-page .enquiry-table .mat-column-status {
+	width: 150px;
+}
+
+.enquiry-page .enquiry-table .mat-column-submitted {
+	width: 135px;
+	white-space: nowrap;
+}
+
+.enquiry-page .enquiry-table .mat-column-actions {
+	width: 82px;
+}
+
+.enquiry-page .enquiry-paginator {
+	--mat-paginator-container-background-color: #fff;
+	--mat-paginator-container-text-color: #718286;
+	--mat-paginator-container-text-font: var(--bs-body-font-family);
+	--mat-paginator-container-text-size: 0.72rem;
+}
+
+.enquiry-page .enquiry-paginator .mat-mdc-paginator-container {
+	font-family: var(--bs-body-font-family);
+}
+
+.enquiry-page .enquiry-paginator .mat-mdc-paginator-page-size-label,
+.enquiry-page .enquiry-paginator .mat-mdc-paginator-range-label,
+.enquiry-page .enquiry-paginator .mat-mdc-select-value {
+	color: #718286;
+	font-family: var(--bs-body-font-family);
+	font-size: 0.72rem;
+}
+
+.enquiry-page .enquiry-paginator .mat-mdc-icon-button {
+	color: #287c79;
+	font-family: var(--bs-body-font-family);
+}
+
 .portal-page.enquiry-page {
 	max-width: 1240px;
 }
