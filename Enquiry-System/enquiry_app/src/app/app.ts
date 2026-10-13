@@ -12,6 +12,7 @@ import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confir
 })
 export class App {
   loggedUserName = signal<string>('');
+  mobileMenuOpen = signal(false);
   commonSrv = inject(Common);
   authService = inject(AuthService);
   router = inject(Router);
@@ -47,5 +48,13 @@ export class App {
     this.readLoggedUserData();
     this.commonSrv.$onLogin.next();
     this.router.navigate(['/enquiry']);
+  }
+
+  toggleMobileNavigation(): void {
+    this.mobileMenuOpen.update(open => !open);
+  }
+
+  closeMobileNavigation(): void {
+    this.mobileMenuOpen.set(false);
   }
 }

@@ -21,7 +21,22 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.navbar-brand')?.textContent).toContain('Enquiry');
-    expect(compiled.querySelector('.navbar-brand')?.textContent).toContain('DESK');
+    expect(compiled.querySelector('.brand-link')?.textContent).toContain('Enquiry');
+    expect(compiled.querySelector('.brand-link')?.textContent).toContain('DESK');
+  });
+
+  it('toggles and closes the responsive navigation', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const toggle = fixture.nativeElement.querySelector('.nav-toggle') as HTMLButtonElement;
+
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    toggle.click();
+    fixture.detectChanges();
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+
+    toggle.click();
+    fixture.detectChanges();
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
   });
 });

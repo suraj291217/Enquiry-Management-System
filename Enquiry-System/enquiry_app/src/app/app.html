@@ -1,6 +1,6 @@
-<nav class="app-navbar navbar navbar-expand-lg" aria-label="Main navigation">
-  <div class="container-fluid navbar-inner">
-    <a class="navbar-brand" [routerLink]="isLoggedIn() ? null : '/enquiry'">
+<nav class="app-navbar" aria-label="Main navigation">
+  <div class="navbar-inner mx-auto flex w-full items-center justify-between">
+    <a class="brand-link" [routerLink]="isLoggedIn() ? null : '/enquiry'" (click)="closeMobileNavigation()">
       <span class="brand-symbol" aria-hidden="true">
         <span class="brand-symbol-dot"></span>
         <span class="brand-symbol-line"></span>
@@ -10,25 +10,27 @@
       </span>
     </a>
 
-    <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <button class="nav-toggle" type="button" aria-label="Toggle navigation" [attr.aria-expanded]="mobileMenuOpen()" aria-controls="mainNavigation" (click)="toggleMobileNavigation()">
+      <span class="nav-toggle-icon" [class.is-open]="mobileMenuOpen()" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
     </button>
 
-    <div class="navbar-collapse" id="mainNavigation" [class.logged-out]="!isLoggedIn()">
-      <ul class="navbar-nav main-nav mb-2 mb-lg-0">
+    <div class="nav-content flex flex-1 items-center justify-between" id="mainNavigation" [class.logged-out]="!isLoggedIn()" [class.mobile-open]="mobileMenuOpen()">
+      <ul class="nav-list main-nav mb-0 flex">
         @if (isLoggedIn()) {
           <li class="nav-item">
-            <a class="nav-link" routerLink="/admin/enquiries" routerLinkActive="active">
+            <a class="nav-link" routerLink="/admin/enquiries" routerLinkActive="active" (click)="closeMobileNavigation()">
               <span class="nav-icon nav-icon-list" aria-hidden="true"></span> Enquiry list
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/admin/categories" routerLinkActive="active">
+            <a class="nav-link" routerLink="/admin/categories" routerLinkActive="active" (click)="closeMobileNavigation()">
               <span class="nav-icon nav-icon-grid" aria-hidden="true"></span> Category master
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/admin/statuses" routerLinkActive="active">
+            <a class="nav-link" routerLink="/admin/statuses" routerLinkActive="active" (click)="closeMobileNavigation()">
               <span class="nav-icon nav-icon-status" aria-hidden="true"></span> Status master
             </a>
           </li>
@@ -37,12 +39,12 @@
 
       <div class="navbar-actions">
         @if (isLoggedIn()) {
-          <a class="admin-profile" routerLink="/admin/login" aria-label="Open admin workspace options">
+          <a class="admin-profile" routerLink="/admin/login" aria-label="Open admin workspace options" (click)="closeMobileNavigation()">
             <span class="profile-avatar" aria-hidden="true">A</span>
             <span class="profile-copy"><strong>Admin</strong><small>Workspace</small></span>
           </a>
         } @else {
-          <a class="admin-access-link" routerLink="/admin/login">
+          <a class="admin-access-link" routerLink="/admin/login" (click)="closeMobileNavigation()">
             <svg class="admin-access-mark" viewBox="0 0 20 20" aria-hidden="true">
               <path d="M6.5 9V6.5a3.5 3.5 0 0 1 7 0V9M5 9h10v8H5zM10 12v2" />
             </svg>

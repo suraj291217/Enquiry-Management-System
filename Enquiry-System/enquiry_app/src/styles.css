@@ -1,9 +1,42 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@source "./app";
+
+@theme {
+	--font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	--breakpoint-lg: 62rem;
+}
+
+/* Preserve Material component defaults while restoring Bootstrap's global box sizing. */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--app-body-font-family: var(--font-sans);
+}
+
 html,
 body,
 #root,
 app-root {
 	max-width: 100%;
 	overflow-x: hidden;
+}
+
+body {
+	font-family: var(--app-body-font-family);
+	line-height: 1.5;
+	margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+	font-family: inherit;
 }
 
 .mat-mdc-snack-bar-container.enquiry-snackbar-success {
@@ -108,29 +141,30 @@ app-root {
 	table-layout: fixed;
 	background: #fff;
 	--mat-table-background-color: #fff;
-	--mat-table-header-headline-font: var(--bs-body-font-family);
+	--mat-table-header-headline-font: var(--app-body-font-family);
 	--mat-table-header-headline-size: 0.64rem;
 	--mat-table-header-headline-weight: 700;
 	--mat-table-header-headline-color: #9aa8a8;
-	--mat-table-row-item-label-text-font: var(--bs-body-font-family);
+	--mat-table-row-item-label-text-font: var(--app-body-font-family);
 	--mat-table-row-item-label-text-size: 0.79rem;
 	--mat-table-row-item-label-text-weight: 400;
 	--mat-table-row-item-label-text-color: #18313b;
 	--mat-table-row-item-outline-color: #edf2f0;
 	--mat-table-header-container-height: 42px;
 	--mat-table-row-item-container-height: 70px;
+	margin-top: 11px;
 }
 
 .enquiry-page .enquiry-table .mat-mdc-header-cell {
 	background: #fff;
 	border-bottom: 1px solid #e4ece9;
 	color: #9aa8a8;
-	font-family: var(--bs-body-font-family);
+	font-family: var(--app-body-font-family);
 	font-size: 0.64rem;
 	font-weight: 700;
 	letter-spacing: 0.1em;
 	line-height: 1.3;
-	padding: 13px 10px;
+	padding: 20px 10px;
 	text-transform: uppercase;
 }
 
@@ -138,7 +172,7 @@ app-root {
 	background: #fff;
 	border-bottom: 1px solid #edf2f0;
 	color: #18313b;
-	font-family: var(--bs-body-font-family);
+	font-family: var(--app-body-font-family);
 	font-size: 0.79rem;
 	line-height: 1.45;
 	padding: 16px 10px;
@@ -179,25 +213,25 @@ app-root {
 .enquiry-page .enquiry-paginator {
 	--mat-paginator-container-background-color: #fff;
 	--mat-paginator-container-text-color: #718286;
-	--mat-paginator-container-text-font: var(--bs-body-font-family);
+	--mat-paginator-container-text-font: var(--app-body-font-family);
 	--mat-paginator-container-text-size: 0.72rem;
 }
 
 .enquiry-page .enquiry-paginator .mat-mdc-paginator-container {
-	font-family: var(--bs-body-font-family);
+	font-family: var(--app-body-font-family);
 }
 
 .enquiry-page .enquiry-paginator .mat-mdc-paginator-page-size-label,
 .enquiry-page .enquiry-paginator .mat-mdc-paginator-range-label,
 .enquiry-page .enquiry-paginator .mat-mdc-select-value {
 	color: #718286;
-	font-family: var(--bs-body-font-family);
+	font-family: var(--app-body-font-family);
 	font-size: 0.72rem;
 }
 
 .enquiry-page .enquiry-paginator .mat-mdc-icon-button {
 	color: #287c79;
-	font-family: var(--bs-body-font-family);
+	font-family: var(--app-body-font-family);
 }
 
 .admin-access-arrow,
@@ -271,10 +305,10 @@ app-root {
 	--mat-stepper-container-color: transparent;
 	--mat-stepper-header-label-text-color: #718286;
 	--mat-stepper-header-selected-state-label-text-color: #18313b;
-	--mat-stepper-header-label-text-font: var(--bs-body-font-family);
+	--mat-stepper-header-label-text-font: var(--app-body-font-family);
 	--mat-stepper-header-label-text-size: 0.82rem;
 	--mat-stepper-header-label-text-weight: 700;
-	--mat-stepper-container-text-font: var(--bs-body-font-family);
+	--mat-stepper-container-text-font: var(--app-body-font-family);
 	--mat-stepper-header-selected-state-icon-background-color: #287c79;
 	--mat-stepper-header-selected-state-icon-foreground-color: #fff;
 	--mat-stepper-header-done-state-icon-background-color: #e2f1ec;
@@ -291,20 +325,31 @@ app-root {
 .portal-page .enquiry-stepper .step-title {
 	color: #18313b;
 	font-size: 0.82rem;
-	font-family: var(--bs-body-font-family);
+	font-family: var(--app-body-font-family);
 	font-weight: 700;
 }
 
 .portal-page .enquiry-stepper .step-description {
 	color: #718286;
 	font-size: 0.68rem;
-	font-family: var(--bs-body-font-family);
+	font-family: var(--app-body-font-family);
 	font-weight: 400;
 	margin-top: 3px;
 }
 
 .portal-page .enquiry-stepper .mat-vertical-stepper-header {
 	padding: 24px;
+	border-radius: 10px;
+	transition: background-color 160ms ease;
+}
+
+.portal-page .enquiry-stepper .mat-vertical-stepper-header:hover:not([aria-disabled="true"]) {
+	background: #eef5f3;
+}
+
+.portal-page .enquiry-stepper .mat-vertical-stepper-header:focus-visible {
+	outline: 2px solid #59c2b1;
+	outline-offset: -2px;
 }
 
 .portal-page .enquiry-stepper .mat-vertical-content {
@@ -532,7 +577,7 @@ app-root {
 	justify-content: center;
 }
 
-.modal-footer .btn {
+.modal-footer .modal-action {
 	min-width: 130px;
 }
 
@@ -547,21 +592,8 @@ app-root {
 
 .status-new { background: #e7f2ff; color: #2866a7; }
 .status-in-progress { background: #fff2cf; color: #89600a; }
-.status-resolved { background: #e2f4e9; color: #287348; margin-left: -11px; }
+.status-resolved { background: #e2f4e9; color: #287348; }
 .status-closed { background: #edf0ef; color: #59645f; }
-
-.btn-track {
-	background: #fff;
-	border: 1px solid #dbe6e3;
-	color: #287c79;
-	font-weight: 700;
-	margin-right: 9px;
-}
-
-.btn-track:hover {
-	background: #eef5f3;
-	color: #1d6666;
-}
 
 .enquiry-page .modal-overlay {
 	align-items: center;
@@ -812,7 +844,7 @@ app-root {
 		flex-direction: column;
 	}
 
-	.modal-footer .btn {
+	.modal-footer .modal-action {
 		width: 100%;
 	}
 

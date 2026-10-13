@@ -28,8 +28,8 @@
 			<span class="record-count">Customer form</span>
 		</div>
 
-	<div class="card enquiry-card border-0">
-		<div class="card-header">
+	<div class="enquiry-card enquiry-panel">
+		<div class="panel-header">
 			<div>
 				<span class="card-label">Enquiry details</span>
 				<h2>Customer request</h2>
@@ -37,7 +37,7 @@
 			<span class="header-icon" aria-hidden="true">&#9993;</span>
 		</div>
 
-		<div class="card-body form-card-body">
+		<div class="panel-body form-card-body">
 			<form #enquiryFormDirective="ngForm" class="enquiry-form" [formGroup]="enquiryForm" (ngSubmit)="onSubmit()">
 				@if (apiError()) {
 					<p class="request-error" role="alert">{{ apiError() }}</p>
@@ -83,7 +83,7 @@
 							</div>
 
 							<div class="step-actions">
-								<button class="btn save-button" type="button" (click)="continueToRequestDetails(stepper)">
+								<button class="save-button inline-flex items-center justify-center gap-1.5 rounded-md px-4 py-2.5 text-xs font-bold transition-colors" type="button" (click)="continueToRequestDetails(stepper)">
 									Continue
 									<svg class="submit-arrow" viewBox="0 0 24 24" aria-hidden="true">
 										<path d="M5 12h14m-6-6 6 6-6 6" />
@@ -143,9 +143,9 @@
 							</div>
 
 							<div class="form-actions">
-								<button class="btn btn-outline-secondary reset-button" type="button" matStepperPrevious>Back</button>
-								<button class="btn btn-outline-secondary reset-button" type="button" (click)="resetForm()">Clear form</button>
-								<button class="btn save-button" type="submit" [disabled]="submitting()">
+								<button class="reset-button inline-flex items-center justify-center rounded-md border px-3.5 py-2.5 text-xs font-bold transition-colors" type="button" matStepperPrevious>Back</button>
+								<button class="reset-button inline-flex items-center justify-center rounded-md border px-3.5 py-2.5 text-xs font-bold transition-colors" type="button" (click)="resetForm()">Clear form</button>
+								<button class="save-button inline-flex items-center justify-center gap-1.5 rounded-md px-4 py-2.5 text-xs font-bold transition-colors" type="submit" [disabled]="submitting()">
 									{{ submitting() ? 'Submitting...' : 'Submit enquiry' }}
 									@if (!submitting()) {
 										<svg class="submit-arrow" viewBox="0 0 24 24" aria-hidden="true">
@@ -172,15 +172,20 @@
 				<p class="page-intro">Enter the enquiry ID from your confirmation and the email used to submit it.</p>
 			</div>
 		</div>
-		<div class="card enquiry-card border-0 track-card">
-			<div class="card-header">
+		<div class="enquiry-card enquiry-panel track-card">
+			<div class="panel-header">
 				<div>
 					<span class="card-label">Status lookup</span>
 					<h2>Find your request</h2>
 				</div>
-				<span class="header-icon" aria-hidden="true">&#8981;</span>
+				<span class="header-icon track-search-icon" aria-hidden="true">
+					<svg viewBox="0 0 24 24" focusable="false">
+						<circle cx="10.8" cy="10.8" r="6.3"></circle>
+						<path d="m15.5 15.5 4.2 4.2"></path>
+					</svg>
+				</span>
 			</div>
-			<div class="card-body track-card-body">
+			<div class="panel-body track-card-body">
 				<form class="track-form" (ngSubmit)="lookupEnquiry($event)">
 					<div class="tracking-fields">
 						<div class="form-field">
@@ -196,7 +201,7 @@
 							</mat-form-field>
 						</div>
 					</div>
-					<button class="btn save-button" type="submit" [disabled]="tracking()">
+					<button class="save-button inline-flex items-center justify-center gap-1.5 rounded-md px-4 py-2.5 text-xs font-bold transition-colors" type="submit" [disabled]="tracking()">
 						{{ tracking() ? 'Checking...' : 'Check status' }}
 						<svg class="submit-arrow" viewBox="0 0 24 24" aria-hidden="true">
 							<path d="M5 12h14m-6-6 6 6-6 6" />

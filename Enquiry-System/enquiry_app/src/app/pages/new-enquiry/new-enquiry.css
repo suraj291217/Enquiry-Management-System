@@ -70,13 +70,18 @@
 	overflow: hidden;
 }
 
-.enquiry-card .card-header {
+.enquiry-panel .panel-header {
 	align-items: center;
 	background: #dff1ed;
 	border-bottom: 1px solid #c8e5df;
 	display: flex;
 	justify-content: space-between;
 	padding: 22px 26px 19px;
+}
+
+.enquiry-panel .panel-body {
+	background: #fff;
+	padding: 28px 30px 30px;
 }
 
 .enquiry-card .card-label {
@@ -101,6 +106,24 @@
 	height: 34px;
 	justify-content: center;
 	width: 34px;
+}
+
+.track-search-icon {
+	flex: 0 0 34px;
+}
+
+.track-search-icon svg {
+	display: block;
+	height: 17px;
+	width: 17px;
+}
+
+.track-search-icon circle,
+.track-search-icon path {
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-width: 1.7;
 }
 
 .form-card-body {
@@ -142,9 +165,9 @@
 .form-field mat-form-field {
 	display: block;
 	width: 100%;
-	--mat-form-field-container-text-font: var(--bs-body-font-family);
+	--mat-form-field-container-text-font: var(--app-body-font-family);
 	--mat-form-field-container-text-size: 0.8rem;
-	--mat-form-field-outlined-label-text-font: var(--bs-body-font-family);
+	--mat-form-field-outlined-label-text-font: var(--app-body-font-family);
 	--mat-form-field-outlined-label-text-size: 0.76rem;
 	--mat-form-field-outlined-label-text-weight: 600;
 	--mat-form-field-outlined-outline-color: #dce8e4;
@@ -152,8 +175,32 @@
 	--mat-form-field-outlined-focus-outline-color: #287c79;
 	--mat-form-field-outlined-focus-label-text-color: #287c79;
 	--mat-form-field-outlined-container-shape: 7px;
-	--mat-select-trigger-text-font: var(--bs-body-font-family);
+	--mat-select-trigger-text-font: var(--app-body-font-family);
 	--mat-select-trigger-text-size: 0.8rem;
+}
+
+.track-form .tracking-fields {
+	align-items: start;
+	gap: 20px;
+}
+
+.track-form .tracking-fields .form-field {
+	min-width: 0;
+}
+
+.track-form .tracking-fields mat-form-field {
+	display: block;
+	width: 100%;
+	--mat-form-field-container-text-font: var(--app-body-font-family);
+	--mat-form-field-container-text-size: 0.8rem;
+	--mat-form-field-outlined-label-text-font: var(--app-body-font-family);
+	--mat-form-field-outlined-label-text-size: 0.76rem;
+	--mat-form-field-outlined-label-text-weight: 600;
+	--mat-form-field-outlined-outline-color: #dce8e4;
+	--mat-form-field-outlined-hover-outline-color: #9abdb3;
+	--mat-form-field-outlined-focus-outline-color: #287c79;
+	--mat-form-field-outlined-focus-label-text-color: #287c79;
+	--mat-form-field-outlined-container-shape: 7px;
 }
 
 .form-field input:not([matInput]),
@@ -314,11 +361,13 @@
 }
 
 .reset-button {
+	background: #fff;
 	border-color: #dbe6e3;
 	color: var(--enquiry-muted);
 }
 
 .save-button {
+	border: 1px solid transparent;
 	background: var(--enquiry-green);
 	color: #fff;
 }
@@ -375,7 +424,7 @@
 		font-size: 2.2rem;
 	}
 
-	.enquiry-card .card-header {
+	.enquiry-panel .panel-header {
 		padding-left: 18px;
 		padding-right: 18px;
 	}

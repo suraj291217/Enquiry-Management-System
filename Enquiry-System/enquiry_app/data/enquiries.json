@@ -179,5 +179,18 @@
     "enquiryDetails": "timings of this restaurant",
     "enquiryId": 15,
     "createdDate": "2026-10-13T11:26:11.956Z"
+  },
+  {
+    "customerName": "K K Akash",
+    "customerEmail": "akashkk@gmail.com",
+    "customerPhone": "73878823232",
+    "categoryId": 2,
+    "statusId": 5,
+    "enquiryType": "Sales",
+    "enquiryDetails": "testing tailwind",
+    "enquiryId": 16,
+    "createdDate": "2026-10-13T15:55:59.140Z",
+    "resolutionNotes": "",
+    "updatedDate": "2026-10-13T15:59:14.855Z"
   }
 ]
