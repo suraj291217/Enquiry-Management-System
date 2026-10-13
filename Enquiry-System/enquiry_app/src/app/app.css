@@ -242,41 +242,19 @@
 }
 
 .admin-access-mark {
-	border: 1.5px solid currentColor;
-	border-radius: 50%;
-	display: inline-flex;
+	flex: 0 0 auto;
 	height: 17px;
-	position: relative;
 	width: 17px;
 }
 
-.admin-access-mark::before {
-	border: 1.3px solid currentColor;
-	border-bottom: 0;
-	border-radius: 6px 6px 0 0;
-	content: "";
-	height: 5px;
-	left: 4px;
-	position: absolute;
-	top: 2px;
-	width: 7px;
-}
-
-.admin-access-mark::after {
-	background: currentColor;
-	border-radius: 1px;
-	content: "";
-	height: 5px;
-	left: 4px;
-	position: absolute;
-	top: 8px;
-	width: 7px;
-}
-
 .admin-access-arrow {
-	font-size: 0.95rem;
-	font-weight: 400;
-	margin-bottom: 4px;
+	color: #718286;
+	transition: color 160ms ease, transform 160ms ease;
+}
+
+.admin-access-link:hover .admin-access-arrow {
+	color: currentColor;
+	transform: translate(1px, -1px);
 }
 
 .admin-profile {

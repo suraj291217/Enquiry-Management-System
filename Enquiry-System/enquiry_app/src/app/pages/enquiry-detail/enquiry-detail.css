@@ -16,15 +16,25 @@
 }
 
 .back-link {
+  border: 1px solid transparent;
+  border-radius: 7px;
   color: var(--detail-green);
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 0.78rem;
   font-weight: 700;
-  margin-bottom: 28px;
+  margin: 0 0 28px -9px;
+  padding: 7px 9px;
   text-decoration: none;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
 }
 
-.back-link:hover { text-decoration: underline; }
+.back-link:hover {
+  background: #e2f1ec;
+  border-color: #cfe7de;
+  color: #1d6666;
+}
 
 .detail-heading {
   align-items: end;

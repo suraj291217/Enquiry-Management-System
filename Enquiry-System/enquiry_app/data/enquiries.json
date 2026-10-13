@@ -113,11 +113,13 @@
     "customerEmail": "shashank@gmail.com",
     "customerPhone": "3732923722",
     "categoryId": 2,
-    "statusId": 1,
+    "statusId": 3,
     "enquiryType": "Technical",
     "enquiryDetails": "help me clear my backlog",
     "enquiryId": 10,
-    "createdDate": "2026-10-11T09:13:15.633Z"
+    "createdDate": "2026-10-11T09:13:15.633Z",
+    "resolutionNotes": "",
+    "updatedDate": "2026-10-13T08:58:40.610Z"
   },
   {
     "customerName": "Anthony",
@@ -140,5 +142,42 @@
     "enquiryDetails": "hello",
     "enquiryId": 12,
     "createdDate": "2026-10-12T06:25:11.818Z"
+  },
+  {
+    "customerName": "Vasu Mishra",
+    "customerEmail": "vasu@gmail.com",
+    "customerPhone": "9321728349",
+    "categoryId": 3,
+    "statusId": 3,
+    "enquiryType": "Sales",
+    "enquiryDetails": "UI Testing",
+    "enquiryId": 13,
+    "createdDate": "2026-10-13T11:19:25.353Z",
+    "resolutionNotes": "how was your experience with UI",
+    "updatedDate": "2026-10-13T11:20:05.609Z"
+  },
+  {
+    "customerName": "Roshin Linson",
+    "customerEmail": "roshin@gmail.com",
+    "customerPhone": "8286728132",
+    "categoryId": 2,
+    "statusId": 3,
+    "enquiryType": "Technical",
+    "enquiryDetails": "testing APIs",
+    "enquiryId": 14,
+    "createdDate": "2026-10-13T11:21:55.999Z",
+    "resolutionNotes": "Okay, test and let us know your experience",
+    "updatedDate": "2026-10-13T11:23:46.597Z"
+  },
+  {
+    "customerName": "Ankit Lamba",
+    "customerEmail": "ankit@gmail.com",
+    "customerPhone": "9837827212",
+    "categoryId": 2,
+    "statusId": 1,
+    "enquiryType": "Sales",
+    "enquiryDetails": "timings of this restaurant",
+    "enquiryId": 15,
+    "createdDate": "2026-10-13T11:26:11.956Z"
   }
 ]

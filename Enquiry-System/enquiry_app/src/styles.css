@@ -105,6 +105,7 @@ app-root {
 
 .enquiry-page .enquiry-table {
 	width: 100%;
+	table-layout: fixed;
 	background: #fff;
 	--mat-table-background-color: #fff;
 	--mat-table-header-headline-font: var(--bs-body-font-family);
@@ -155,22 +156,24 @@ app-root {
 	border-bottom: 0;
 }
 
-.enquiry-page .enquiry-table .mat-column-enquiry {
-	width: 130px;
+.enquiry-page .enquiry-table .mat-mdc-header-cell,
+.enquiry-page .enquiry-table .mat-mdc-cell {
+	vertical-align: middle;
 }
 
-.enquiry-page .enquiry-table .mat-column-category,
-.enquiry-page .enquiry-table .mat-column-status {
-	width: 150px;
+.enquiry-page .enquiry-table .mat-column-enquiry { width: 14%; }
+.enquiry-page .enquiry-table .mat-column-customer { width: 29%; }
+.enquiry-page .enquiry-table .mat-column-category { width: 16%; }
+.enquiry-page .enquiry-table .mat-column-status { width: 14%; }
+.enquiry-page .enquiry-table .mat-column-submitted { width: 16%; }
+.enquiry-page .enquiry-table .mat-column-actions { width: 11%; }
+
+.enquiry-page .customer-contact {
+	overflow-wrap: anywhere;
 }
 
-.enquiry-page .enquiry-table .mat-column-submitted {
-	width: 135px;
-	white-space: nowrap;
-}
-
-.enquiry-page .enquiry-table .mat-column-actions {
-	width: 82px;
+.enquiry-page .mat-column-actions {
+	text-align: right;
 }
 
 .enquiry-page .enquiry-paginator {
@@ -195,6 +198,69 @@ app-root {
 .enquiry-page .enquiry-paginator .mat-mdc-icon-button {
 	color: #287c79;
 	font-family: var(--bs-body-font-family);
+}
+
+.admin-access-arrow,
+.button-arrow,
+.submit-arrow {
+	display: inline-block;
+	flex: 0 0 auto;
+	height: 16px;
+	width: 16px;
+}
+
+.admin-access-arrow {
+	height: 14px;
+	width: 14px;
+}
+
+.admin-access-arrow path,
+.button-arrow path,
+.submit-arrow path,
+.back-arrow path,
+.admin-access-mark path,
+.lock-icon path {
+	fill: none;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.admin-access-arrow path,
+.button-arrow path,
+.submit-arrow path,
+.back-arrow path {
+	stroke-width: 1.7;
+}
+
+.admin-access-mark {
+	color: #287c79;
+	height: 17px;
+	width: 17px;
+}
+
+.admin-access-mark path,
+.lock-icon path {
+	stroke-width: 1.6;
+}
+
+.lock-icon {
+	color: #829996;
+	flex: 0 0 auto;
+	height: 17px;
+	width: 17px;
+}
+
+.back-link {
+	align-items: center;
+	display: inline-flex;
+	gap: 8px;
+}
+
+.back-arrow {
+	color: #287c79;
+	height: 16px;
+	width: 16px;
 }
 
 .portal-page.enquiry-page {

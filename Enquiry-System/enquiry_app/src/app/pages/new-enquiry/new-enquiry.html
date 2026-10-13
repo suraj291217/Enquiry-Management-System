@@ -84,7 +84,10 @@
 
 							<div class="step-actions">
 								<button class="btn save-button" type="button" (click)="continueToRequestDetails(stepper)">
-									Continue <span class="submit-arrow" aria-hidden="true">&#8594;</span>
+									Continue
+									<svg class="submit-arrow" viewBox="0 0 24 24" aria-hidden="true">
+										<path d="M5 12h14m-6-6 6 6-6 6" />
+									</svg>
 								</button>
 							</div>
 						</div>
@@ -144,7 +147,11 @@
 								<button class="btn btn-outline-secondary reset-button" type="button" (click)="resetForm()">Clear form</button>
 								<button class="btn save-button" type="submit" [disabled]="submitting()">
 									{{ submitting() ? 'Submitting...' : 'Submit enquiry' }}
-									@if (!submitting()) { <span class="submit-arrow" aria-hidden="true">&#8594;</span> }
+									@if (!submitting()) {
+										<svg class="submit-arrow" viewBox="0 0 24 24" aria-hidden="true">
+											<path d="M5 12h14m-6-6 6 6-6 6" />
+										</svg>
+									}
 								</button>
 							</div>
 						</div>
@@ -189,7 +196,12 @@
 							</mat-form-field>
 						</div>
 					</div>
-					<button class="btn save-button" type="submit" [disabled]="tracking()">{{ tracking() ? 'Checking...' : 'Check status' }} <span aria-hidden="true">&#8594;</span></button>
+					<button class="btn save-button" type="submit" [disabled]="tracking()">
+						{{ tracking() ? 'Checking...' : 'Check status' }}
+						<svg class="submit-arrow" viewBox="0 0 24 24" aria-hidden="true">
+							<path d="M5 12h14m-6-6 6 6-6 6" />
+						</svg>
+					</button>
 					@if (tracking()) {
 						<p class="request-loading" role="status">Looking up your enquiry...</p>
 					}

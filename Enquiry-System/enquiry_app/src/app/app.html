@@ -43,9 +43,13 @@
           </a>
         } @else {
           <a class="admin-access-link" routerLink="/admin/login">
-            <span class="admin-access-mark" aria-hidden="true"></span>
+            <svg class="admin-access-mark" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M6.5 9V6.5a3.5 3.5 0 0 1 7 0V9M5 9h10v8H5zM10 12v2" />
+            </svg>
             <span>Admin portal</span>
-            <span class="admin-access-arrow" aria-hidden="true">&#8599;</span>
+            <svg class="admin-access-arrow" viewBox="0 0 18 18" aria-hidden="true">
+              <path d="M6 12 12 6M6.5 6H12v5.5" />
+            </svg>
           </a>
         }
       </div>

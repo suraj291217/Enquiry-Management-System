@@ -1,5 +1,10 @@
 <section class="detail-page">
-  <a class="back-link" routerLink="/admin/enquiries">&larr; Back to enquiries</a>
+  <a class="back-link" routerLink="/admin/enquiries">
+    <svg class="back-arrow" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M19 12H5m7 7-7-7 7-7" />
+    </svg>
+    <span>Back to enquiries</span>
+  </a>
 
   @if (enquiry(); as record) {
     <header class="detail-heading">
@@ -71,7 +76,12 @@
       <p class="page-kicker">Record unavailable</p>
       <h1>Enquiry not found</h1>
       <p class="page-intro">There is no enquiry with this ID. It may have been removed or the link may be incorrect.</p>
-      <a class="back-link" routerLink="/admin/enquiries">Return to enquiries</a>
+      <a class="back-link" routerLink="/admin/enquiries">
+        <svg class="back-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 12H5m7 7-7-7 7-7" />
+        </svg>
+        <span>Return to enquiries</span>
+      </a>
     </section>
   }
 </section>
