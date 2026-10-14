@@ -30,6 +30,32 @@ describe('Login', () => {
     expect(component).toBeTruthy();
   });
 
+  it('shows and hides the entered password without submitting the form', () => {
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector('#password') as HTMLInputElement;
+    const toggle = fixture.nativeElement.querySelector('.password-visibility-toggle') as HTMLButtonElement;
+    const submitSpy = vi.spyOn(component, 'onLogin');
+    input.value = 'secret123';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    fixture.detectChanges();
+
+    expect(input.type).toBe('password');
+    expect(input.value).toBe('secret123');
+    expect(toggle.getAttribute('aria-label')).toBe('Show password');
+
+    toggle.click();
+    fixture.detectChanges();
+    expect(input.type).toBe('text');
+    expect(toggle.getAttribute('aria-label')).toBe('Hide password');
+    expect(toggle.getAttribute('aria-pressed')).toBe('true');
+
+    toggle.click();
+    fixture.detectChanges();
+    expect(input.type).toBe('password');
+    expect(input.value).toBe('secret123');
+    expect(submitSpy).not.toHaveBeenCalled();
+  });
+
   it('shows live new, active, and today-resolved counts', () => {
     enquiryService.addEnquiry({
       customerName: 'New customer',

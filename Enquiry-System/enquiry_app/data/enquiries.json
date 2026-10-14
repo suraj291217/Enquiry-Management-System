@@ -203,5 +203,64 @@
     "enquiryDetails": "testing after migration",
     "enquiryId": 17,
     "createdDate": "2026-10-13T17:08:17.556Z"
+  },
+  {
+    "customerName": "Punith Basavaraj",
+    "customerEmail": "punith@gmail.com",
+    "customerPhone": "823972837",
+    "categoryId": 1,
+    "statusId": 2,
+    "enquiryType": "Technical",
+    "enquiryDetails": "testing tailwind",
+    "enquiryId": 18,
+    "createdDate": "2026-10-14T05:26:33.389Z",
+    "resolutionNotes": "",
+    "updatedDate": "2026-10-14T05:27:28.631Z"
+  },
+  {
+    "customerName": "Sanat Nagpal",
+    "customerEmail": "sanat@gmail.com",
+    "customerPhone": "389198282",
+    "categoryId": 3,
+    "statusId": 1,
+    "enquiryType": "Sales",
+    "enquiryDetails": "testing tailwing and funcitonalities",
+    "enquiryId": 19,
+    "createdDate": "2026-10-14T05:28:31.883Z"
+  },
+  {
+    "customerName": "Kiran Kumar",
+    "customerEmail": "kiran@gmail.com",
+    "customerPhone": "7276361882",
+    "categoryId": 3,
+    "statusId": 1,
+    "enquiryType": "General",
+    "enquiryDetails": "testing styles with tailwind",
+    "enquiryId": 20,
+    "createdDate": "2026-10-14T05:39:33.633Z"
+  },
+  {
+    "customerName": "Pranav",
+    "customerEmail": "pranav@gmail.com",
+    "customerPhone": "81947291322",
+    "categoryId": 3,
+    "statusId": 1,
+    "enquiryType": "Technical",
+    "enquiryDetails": "this module is not working",
+    "enquiryId": 21,
+    "createdDate": "2026-10-14T07:22:29.492Z"
+  },
+  {
+    "customerName": "Madhur Khanna",
+    "customerEmail": "madhur@gmail.com",
+    "customerPhone": "948201931",
+    "categoryId": 2,
+    "statusId": 3,
+    "enquiryType": "Technical",
+    "enquiryDetails": "testing APIs",
+    "enquiryId": 22,
+    "createdDate": "2026-10-14T07:23:22.721Z",
+    "resolutionNotes": "thanks for testing",
+    "updatedDate": "2026-10-14T07:24:27.374Z"
   }
 ]

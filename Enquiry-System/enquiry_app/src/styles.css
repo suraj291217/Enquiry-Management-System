@@ -38,6 +38,72 @@ textarea {
 	font-family: inherit;
 }
 
+.login-page .password-input-wrap {
+	position: relative;
+}
+
+.login-page .password-input-wrap #password {
+	padding-right: 52px;
+}
+
+.login-page .password-visibility-toggle {
+	align-items: center;
+	background: transparent;
+	border: 0;
+	border-radius: 6px;
+	color: #829996;
+	cursor: pointer;
+	display: inline-flex;
+	height: 36px;
+	justify-content: center;
+	padding: 0;
+	position: absolute;
+	right: 9px;
+	top: 50%;
+	transform: translateY(-50%);
+	transition: background 160ms ease, color 160ms ease;
+	width: 36px;
+}
+
+.login-page .password-visibility-toggle:hover {
+	background: #eef5f3;
+	color: #287c79;
+}
+
+.login-page .password-visibility-toggle:focus-visible {
+	outline: 2px solid #59c2b1;
+	outline-offset: 1px;
+}
+
+.login-page .password-visibility-toggle svg {
+	display: block;
+	fill: none;
+	height: 19px;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.6;
+	width: 19px;
+}
+
+.login-page .password-visibility-toggle .visibility-slash {
+	stroke-width: 1.8;
+}
+
+.mat-mdc-snack-bar-container {
+	--mat-snack-bar-supporting-text-font: var(--app-body-font-family);
+	--mat-snack-bar-supporting-text-line-height: 1.45;
+	--mat-snack-bar-supporting-text-size: 0.84rem;
+	--mat-snack-bar-supporting-text-weight: 500;
+}
+
+.mat-mdc-snack-bar-container .mat-mdc-button {
+	font-family: var(--app-body-font-family);
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}
+
 .mat-mdc-snack-bar-container.enquiry-snackbar-success {
 	--mat-snack-bar-container-color: #e2f1ec;
 	--mat-snack-bar-supporting-text-color: #18313b;

@@ -23,6 +23,7 @@ export class Login implements OnInit, OnDestroy {
 
   emailError = '';
   loginError = '';
+  showPassword = false;
 
   private subscription = new Subscription();
 
@@ -104,6 +105,10 @@ export class Login implements OnInit, OnDestroy {
 
   onPasswordChange(): void {
     this.loginError = '';
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   onLogin(): void {

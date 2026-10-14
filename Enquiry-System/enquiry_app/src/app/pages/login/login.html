@@ -104,15 +104,32 @@
 								<label for="password">Password</label>
 								<a href="#forgot-password">Forgot password?</a>
 							</div>
-							<input
-								id="password"
-								[(ngModel)]="userLogin.password"
-								name="password"
-								type="password"
-								placeholder="Enter your password"
-								autocomplete="current-password"
-								(input)="onPasswordChange()"
-							/>
+							<div class="password-input-wrap">
+								<input
+									id="password"
+									[(ngModel)]="userLogin.password"
+									name="password"
+									[type]="showPassword ? 'text' : 'password'"
+									placeholder="Enter your password"
+									autocomplete="current-password"
+									(input)="onPasswordChange()"
+								/>
+								<button
+									class="password-visibility-toggle"
+									type="button"
+									[attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+									[attr.aria-pressed]="showPassword"
+									(click)="togglePasswordVisibility()"
+								>
+									<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+										<path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z" />
+										<circle cx="12" cy="12" r="2.6" />
+										@if (showPassword) {
+											<path class="visibility-slash" d="m4 4 16 16" />
+										}
+									</svg>
+								</button>
+							</div>
 						</div>
 
 						@if (loginError) {

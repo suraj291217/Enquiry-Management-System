@@ -30,7 +30,6 @@ export class CategoryMaster implements OnInit {
   };
 
   ngOnInit(): void {
-    // Initialized from centralized CategoryService
   }
 
   onSaveCategory(): void {
