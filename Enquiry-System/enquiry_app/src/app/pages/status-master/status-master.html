@@ -21,33 +21,43 @@
 				<div class="workspace-card-body">
 					<div class="table-wrap">
 						<table class="category-table mb-0 w-full align-middle">
+							<colgroup>
+								<col class="record-number-column" />
+								<col class="record-name-column" />
+								<col class="record-status-column" />
+								<col class="record-actions-column" />
+							</colgroup>
 							<thead>
 								<tr>
-									<th scope="col">Status ID</th>
-									<th scope="col">Status name</th>
-									<th scope="col">Is active</th>
-									<th scope="col" class="text-right">Actions</th>
+									<th class="record-number-cell" scope="col">Status ID</th>
+									<th class="record-name-cell" scope="col">Status name</th>
+									<th class="record-status-cell" scope="col">Is active</th>
+									<th class="record-actions-cell" scope="col">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
 								@for (item of statusList(); track item.statusId) {
 									<tr>
-										<td class="category-id">{{ item.statusId }}</td>
-										<td class="category-name">{{ item.statusName }}</td>
-										<td>
+										<td class="record-number-cell category-id">{{ item.statusId }}</td>
+										<td class="record-name-cell category-name">{{ item.statusName }}</td>
+										<td class="record-status-cell">
 											<app-status-badge
 												[isActive]="item.isActive"
 												(badgeClick)="onStatusBadgeClick(item)"
 											/>
 										</td>
-										<td class="text-right">
+										<td class="record-actions-cell">
 											<div class="table-actions">
 												<button class="action-button edit-button" type="button" aria-label="Edit status" (click)="onEditStatus(item)">
-													<span class="action-icon edit-icon" aria-hidden="true"></span>
+													<svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+														<path d="m15 5 4 4M4 20l4.2-.9L19.1 8.2a2.1 2.1 0 0 0-3-3L5.1 16.2 4 20Z" />
+													</svg>
 													<span>Edit</span>
 												</button>
 												<button class="action-button delete-button" type="button" aria-label="Delete status" (click)="onDeleteStatus(item.statusId)">
-													<span class="action-icon delete-icon" aria-hidden="true"></span>
+													<svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+														<path d="M4 7h16M10 11v6m4-6v6M5.5 7l1 13h11l1-13M9 7V4h6v3" />
+													</svg>
 													<span>Delete</span>
 												</button>
 											</div>
@@ -83,7 +93,11 @@
 						<span class="card-label">Manage</span>
 						<h2>{{ isEditMode() ? 'Edit status' : 'Add status' }}</h2>
 					</div>
-					<span class="header-icon" aria-hidden="true">&#43;</span>
+					<span class="header-icon header-icon-add" aria-hidden="true">
+						<svg viewBox="0 0 20 20" focusable="false">
+							<path d="M10 4v12M4 10h12" />
+						</svg>
+					</span>
 				</div>
 				<div class="workspace-card-body form-card-body">
 					<form class="category-form">

@@ -125,7 +125,6 @@
 
 .table-wrap {
 	overflow-x: auto;
-	padding: 8px 24px 0;
 }
 
 .category-table {
@@ -258,15 +257,20 @@
 }
 
 .enquiry-filters {
+	background: rgba(255, 255, 255, 0.94);
+	border-bottom: 1px solid #edf2f0;
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
 	align-items: start;
 	gap: 14px;
 	padding: 22px 24px 8px;
+	position: sticky;
+	top: 0;
+	z-index: 3;
 }
 
 .enquiry-table {
-	min-width: 850px;
+	min-width: 960px;
 }
 
 .enquiry-code {
@@ -282,10 +286,10 @@
 }
 
 .customer-contact {
-	max-width: 280px;
 	margin-top: 4px;
 	color: var(--category-muted);
 	font-size: 0.68rem;
+	line-height: 1.45;
 }
 
 .status-pill {
@@ -294,7 +298,6 @@
 	border-radius: 20px;
 	font-size: 0.63rem;
 	font-weight: 700;
-	white-space: nowrap;
 }
 
 .status-new { background: #e7f2ff; color: #2866a7; }
@@ -330,7 +333,6 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 16px;
 	padding: 20px 24px;
 	border-bottom: 1px solid #c8e5df;
 }
@@ -354,7 +356,6 @@
 	border-radius: 50%;
 	background: white;
 	color: #52635c;
-	font-size: 24px;
 }
 
 .detail-content {
@@ -375,8 +376,6 @@
 
 .detail-customer a {
 	display: block;
-	width: fit-content;
-	margin-top: 4px;
 	color: var(--category-green);
 	font-size: 0.8rem;
 }
@@ -384,7 +383,6 @@
 .detail-facts {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 14px;
 	margin: 22px 0;
 	padding: 16px 0;
 	border-top: 1px solid var(--category-line);
@@ -397,19 +395,17 @@
 }
 
 .detail-facts dd {
-	margin: 4px 0 0;
 	font-size: 0.8rem;
 }
 
 .detail-message {
-	margin-bottom: 22px;
+	margin-bottom: 20px;
 }
 
 .detail-message p {
 	margin: 0;
 	color: var(--category-muted);
 	font-size: 0.86rem;
-	line-height: 1.6;
 	white-space: pre-wrap;
 }
 

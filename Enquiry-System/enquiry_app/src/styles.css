@@ -7,7 +7,6 @@
 	--breakpoint-lg: 62rem;
 }
 
-/* Preserve Material component defaults while restoring Bootstrap's global box sizing. */
 *,
 *::before,
 *::after {
@@ -164,7 +163,10 @@ textarea {
 	font-weight: 700;
 	letter-spacing: 0.1em;
 	line-height: 1.3;
-	padding: 20px 10px;
+	padding: 16px 14px;
+	position: sticky;
+	top: 0;
+	z-index: 2;
 	text-transform: uppercase;
 }
 
@@ -175,7 +177,7 @@ textarea {
 	font-family: var(--app-body-font-family);
 	font-size: 0.79rem;
 	line-height: 1.45;
-	padding: 16px 10px;
+	padding: 14px;
 }
 
 .enquiry-page .enquiry-table .mat-mdc-row {
@@ -195,19 +197,35 @@ textarea {
 	vertical-align: middle;
 }
 
-.enquiry-page .enquiry-table .mat-column-enquiry { width: 14%; }
-.enquiry-page .enquiry-table .mat-column-customer { width: 29%; }
-.enquiry-page .enquiry-table .mat-column-category { width: 16%; }
-.enquiry-page .enquiry-table .mat-column-status { width: 14%; }
-.enquiry-page .enquiry-table .mat-column-submitted { width: 16%; }
-.enquiry-page .enquiry-table .mat-column-actions { width: 11%; }
+.enquiry-page .enquiry-table .mat-column-customer { width: 33%; }
+.enquiry-page .enquiry-table .mat-column-category { width: 15%; }
+.enquiry-page .enquiry-table .mat-column-status { width: 13%; }
+.enquiry-page .enquiry-table .mat-column-submitted { width: 14%; }
 
 .enquiry-page .customer-contact {
 	overflow-wrap: anywhere;
 }
 
-.enquiry-page .mat-column-actions {
+.enquiry-page .enquiry-table .mat-column-enquiry {
+	padding-left: 24px;
+	width: 14%;
+}
+
+.enquiry-page .enquiry-table .mat-column-actions {
+	padding-right: 24px;
 	text-align: right;
+	width: 11%;
+}
+
+.enquiry-page .enquiry-table-wrap {
+	padding: 0 20px;
+}
+
+@media (max-width: 575px) {
+	.enquiry-page .enquiry-table-wrap {
+		padding-right: 12px;
+		padding-left: 12px;
+	}
 }
 
 .enquiry-page .enquiry-paginator {

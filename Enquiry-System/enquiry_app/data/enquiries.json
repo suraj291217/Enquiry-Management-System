@@ -185,12 +185,23 @@
     "customerEmail": "akashkk@gmail.com",
     "customerPhone": "73878823232",
     "categoryId": 2,
-    "statusId": 5,
+    "statusId": 2,
     "enquiryType": "Sales",
     "enquiryDetails": "testing tailwind",
     "enquiryId": 16,
     "createdDate": "2026-10-13T15:55:59.140Z",
     "resolutionNotes": "",
-    "updatedDate": "2026-10-13T15:59:14.855Z"
+    "updatedDate": "2026-10-13T17:17:06.116Z"
+  },
+  {
+    "customerName": "Vishal Ghosh",
+    "customerEmail": "vishal@gmail.com",
+    "customerPhone": "8377482872",
+    "categoryId": 1,
+    "statusId": 1,
+    "enquiryType": "Technical",
+    "enquiryDetails": "testing after migration",
+    "enquiryId": 17,
+    "createdDate": "2026-10-13T17:08:17.556Z"
   }
 ]

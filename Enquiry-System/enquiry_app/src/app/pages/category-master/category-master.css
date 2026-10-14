@@ -88,14 +88,32 @@
 
 .header-icon {
 	align-items: center;
-	background: rgba(255, 255, 255, 0.72);
+	background: linear-gradient(145deg, #fff 0%, #eef8f5 100%);
+	border: 1px solid rgba(40, 124, 121, 0.12);
 	border-radius: 50%;
 	color: var(--category-green);
 	display: inline-flex;
-	font-size: 1.15rem;
 	height: 34px;
 	justify-content: center;
 	width: 34px;
+	box-shadow: 0 3px 8px rgba(31, 71, 76, 0.08);
+}
+
+.header-icon-add {
+	background: linear-gradient(145deg, #287c79 0%, #1d6666 100%);
+	border-color: rgba(255, 255, 255, 0.45);
+	color: #fff;
+}
+
+.header-icon svg {
+	display: block;
+	fill: none;
+	height: 17px;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.8;
+	width: 17px;
 }
 
 .category-card .workspace-card-body {
@@ -109,9 +127,16 @@
 }
 
 .category-table {
-	min-width: 570px;
+	min-width: 640px;
+	table-layout: fixed;
+	width: 100%;
 	border-collapse: collapse;
 }
+
+.record-number-column { width: 14%; }
+.record-name-column { width: 34%; }
+.record-status-column { width: 20%; }
+.record-actions-column { width: 32%; }
 
 .category-table thead th {
 	border-bottom: 1px solid var(--category-line);
@@ -119,7 +144,7 @@
 	font-size: 0.64rem;
 	font-weight: 700;
 	letter-spacing: 0.1em;
-	padding: 13px 10px;
+	padding: 13px 14px;
 	text-transform: uppercase;
 }
 
@@ -127,7 +152,20 @@
 	border-bottom: 1px solid #edf2f0;
 	color: var(--category-ink);
 	font-size: 0.79rem;
-	padding: 16px 10px;
+	padding: 16px 14px;
+	vertical-align: middle;
+	overflow-wrap: anywhere;
+}
+
+.category-table .record-number-cell,
+.category-table .record-name-cell,
+.category-table .record-status-cell {
+	text-align: left;
+}
+
+.category-table .record-actions-cell {
+	padding-right: 18px;
+	text-align: right;
 }
 
 .category-table tbody tr:last-child td {
@@ -201,87 +239,68 @@
 
 .table-actions {
 	display: inline-flex;
+	justify-content: flex-end;
 	gap: 6px;
+	max-width: 100%;
 }
 
 .action-button {
 	align-items: center;
-	background: transparent;
-	border: 1px solid #dce8e4;
-	border-radius: 6px;
-	color: var(--category-green);
+	background: #fff;
+	border: 1px solid #d7e5e0;
+	border-radius: 7px;
+	color: #28736f;
 	cursor: pointer;
 	display: inline-flex;
-	font-size: 0.66rem;
+	font-size: 0.68rem;
 	font-weight: 700;
-	gap: 5px;
-	height: 30px;
+	gap: 7px;
+	height: 32px;
 	justify-content: center;
-	padding: 0 9px;
-	transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+	padding: 0 11px;
+	transition: background 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
 .action-icon {
-	display: inline-block;
-	height: 13px;
-	position: relative;
-	width: 13px;
+	display: block;
+	fill: none;
+	height: 15px;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 1.65;
+	width: 15px;
 }
 
-.edit-icon::before {
-	background: currentColor;
-	border-radius: 1px;
-	content: "";
-	height: 4px;
-	left: 2px;
-	position: absolute;
-	top: 6px;
-	transform: rotate(-45deg);
-	width: 10px;
+.edit-button {
+	background: #f7fbfa;
 }
 
-.edit-icon::after {
-	border-bottom: 4px solid currentColor;
-	border-left: 3px solid transparent;
-	border-top: 3px solid transparent;
-	content: "";
-	left: 0;
-	position: absolute;
-	top: 8px;
-	transform: rotate(-45deg);
-}
-
-.delete-icon::before {
-	border: 1.5px solid currentColor;
-	border-radius: 0 0 2px 2px;
-	content: "";
-	height: 9px;
-	left: 3px;
-	position: absolute;
-	top: 3px;
-	width: 7px;
-}
-
-.delete-icon::after {
-	border-top: 1.5px solid currentColor;
-	box-shadow: 2px -3px 0 -0.5px currentColor;
-	content: "";
-	left: 2px;
-	position: absolute;
-	top: 2px;
-	width: 9px;
+.delete-button {
+	background: #fffafa;
+	border-color: #eadbd8;
+	color: #a34e43;
 }
 
 .edit-button:hover {
 	background: #e3f3ef;
 	border-color: #b9ded5;
 	color: var(--category-green);
+	box-shadow: 0 3px 8px rgba(40, 124, 121, 0.1);
+	transform: translateY(-1px);
 }
 
 .delete-button:hover {
 	background: #fcedeb;
 	border-color: #e5bdb7;
 	color: #ad5d52;
+	box-shadow: 0 3px 8px rgba(173, 93, 82, 0.1);
+	transform: translateY(-1px);
+}
+
+.action-button:focus-visible {
+	outline: 2px solid #59c2b1;
+	outline-offset: 2px;
 }
 
 .table-footer {
