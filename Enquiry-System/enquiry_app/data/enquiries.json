@@ -262,5 +262,18 @@
     "createdDate": "2026-10-14T07:23:22.721Z",
     "resolutionNotes": "thanks for testing",
     "updatedDate": "2026-10-14T07:24:27.374Z"
+  },
+  {
+    "customerName": "Abraham John",
+    "customerEmail": "john@gmail.com",
+    "customerPhone": "746839237",
+    "categoryId": 3,
+    "statusId": 3,
+    "enquiryType": "Technical",
+    "enquiryDetails": "testing tailwind and functionalities",
+    "enquiryId": 23,
+    "createdDate": "2026-10-15T02:34:25.801Z",
+    "resolutionNotes": "thanks for informing",
+    "updatedDate": "2026-10-15T02:36:30.846Z"
   }
 ]

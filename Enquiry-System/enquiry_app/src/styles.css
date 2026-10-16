@@ -586,11 +586,22 @@ textarea {
 	gap: 4px;
 }
 
-.tracking-status {
-	align-items: flex-end;
+.tracking-result-heading > .tracking-status {
+	align-content: start;
+	display: grid;
+	gap: 6px;
+	justify-items: center;
+	text-align: center;
+	width: max-content;
+}
+
+.tracking-result-heading > .tracking-status .tracking-result-label {
+	display: block;
+	text-align: center;
 }
 
 .tracking-status .status-pill {
+	justify-self: center;
 	width: fit-content;
 }
 
