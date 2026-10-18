@@ -6,6 +6,7 @@ import { CategoryService } from '../../services/category.service';
 import { EnquiryService } from '../../services/enquiry.service';
 import { StatusService } from '../../services/status.service';
 import { Router } from '@angular/router';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -13,7 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
-  imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatTableModule],
+  imports: [CommonModule, FormsModule, MatExpansionModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatTableModule],
   selector: 'app-enquiry-list',
   styleUrl: './enquiry-list.css',
   templateUrl: './enquiry-list.html',

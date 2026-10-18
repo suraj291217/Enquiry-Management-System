@@ -6,7 +6,7 @@ import { IUser } from '../model/user.model';
 })
 export class AuthService {
   private currentUser = signal<IUser | null>(null);
-  private readonly STORAGE_KEY = 'enquiryApp';
+  private readonly  STORAGE_KEY = 'enquiryApp';
   private readonly USER_DATA_KEY = 'enquiryAppUserData';
 
   constructor() {

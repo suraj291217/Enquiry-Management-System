@@ -257,16 +257,19 @@
 }
 
 .enquiry-filters {
-	background: rgba(255, 255, 255, 0.94);
-	border-bottom: 1px solid #edf2f0;
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
 	align-items: start;
 	gap: 14px;
-	padding: 22px 24px 8px;
-	position: sticky;
-	top: 0;
-	z-index: 3;
+	padding: 4px 24px 20px;
+}
+
+.enquiry-filter-panel {
+	border: 1px solid var(--category-line);
+	border-radius: 10px;
+	box-shadow: none;
+	margin: 0 20px 8px;
+	overflow: hidden;
 }
 
 .enquiry-table {
@@ -523,7 +526,7 @@
 
 	.enquiry-filters {
 		grid-template-columns: 1fr;
-		padding: 18px 14px 8px;
+		padding: 4px 18px 18px;
 	}
 
 	.detail-header,

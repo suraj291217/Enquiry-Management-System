@@ -28,6 +28,22 @@ describe('EnquiryList', () => {
     expect(component).toBeTruthy();
   });
 
+  it('shows a Material expansion toggle beside the enquiry filters', async () => {
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector('mat-expansion-panel');
+    const header = panel?.querySelector('.mat-expansion-panel-header');
+    expect(panel).not.toBeNull();
+    expect(panel?.querySelector('.mat-expansion-indicator')).not.toBeNull();
+    expect(header?.getAttribute('aria-expanded')).toBe('false');
+    expect(panel?.querySelector('#enquirySearch')).not.toBeNull();
+
+    header?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(header?.getAttribute('aria-expanded')).toBe('true');
+  });
+
   it('filters enquiries by customer name and generated ID', () => {
     enquiryService.addEnquiry({
       customerName: 'Avery Chen',

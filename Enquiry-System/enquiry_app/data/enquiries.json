@@ -222,33 +222,42 @@
     "customerEmail": "sanat@gmail.com",
     "customerPhone": "389198282",
     "categoryId": 3,
-    "statusId": 1,
+    "statusId": 5,
     "enquiryType": "Sales",
     "enquiryDetails": "testing tailwing and funcitonalities",
     "enquiryId": 19,
-    "createdDate": "2026-10-14T05:28:31.883Z"
+    "createdDate": "2026-10-14T05:28:31.883Z",
+    "resolutionNotes": "",
+    "updatedDate": "2026-10-16T12:12:42.185Z",
+    "isDeleted": true
   },
   {
     "customerName": "Kiran Kumar",
     "customerEmail": "kiran@gmail.com",
     "customerPhone": "7276361882",
     "categoryId": 3,
-    "statusId": 1,
+    "statusId": 3,
     "enquiryType": "General",
     "enquiryDetails": "testing styles with tailwind",
     "enquiryId": 20,
-    "createdDate": "2026-10-14T05:39:33.633Z"
+    "createdDate": "2026-10-14T05:39:33.633Z",
+    "resolutionNotes": "response",
+    "updatedDate": "2026-10-16T12:06:06.506Z",
+    "isDeleted": true
   },
   {
     "customerName": "Pranav",
     "customerEmail": "pranav@gmail.com",
     "customerPhone": "81947291322",
     "categoryId": 3,
-    "statusId": 1,
+    "statusId": 3,
     "enquiryType": "Technical",
     "enquiryDetails": "this module is not working",
     "enquiryId": 21,
-    "createdDate": "2026-10-14T07:22:29.492Z"
+    "createdDate": "2026-10-14T07:22:29.492Z",
+    "isDeleted": false,
+    "updatedDate": "2026-10-18T15:35:44.088Z",
+    "resolutionNotes": "thanks for informing"
   },
   {
     "customerName": "Madhur Khanna",
