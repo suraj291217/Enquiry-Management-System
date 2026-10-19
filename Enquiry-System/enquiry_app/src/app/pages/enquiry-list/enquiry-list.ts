@@ -35,7 +35,7 @@ export class EnquiryList {
   readonly displayedColumns = ['enquiry', 'customer', 'category', 'status', 'submitted', 'actions'];
   readonly dataSource = new MatTableDataSource<IEnquiry>([]);
   searchTerm = '';
-  recordView: 'open' | 'all' | 'trash' = 'open';
+  recordView: 'open' | 'all' | 'trash' = 'all';
   selectedStatusId = '';
   selectedCategoryId = '';
   pageIndex = 0;
@@ -113,14 +113,7 @@ export class EnquiryList {
   }
 
   getStatusClass(statusId: number): string {
-    const status = this.statusService.getStatusById(statusId);
-    const normalized = (status?.statusCode || status?.statusName || '')
-      .toLowerCase()
-      .replaceAll('_', '-')
-      .replaceAll(' ', '-');
-    return ['new', 'in-progress', 'resolved', 'closed'].includes(normalized)
-      ? `status-${normalized}`
-      : 'status-custom';
+    return this.statusService.getBadgeClass(statusId);
   }
 
   getStatusStyle(statusId: number): { backgroundColor: string; color: string } | null {

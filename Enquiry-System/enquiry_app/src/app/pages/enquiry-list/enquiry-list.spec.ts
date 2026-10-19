@@ -63,7 +63,7 @@ describe('EnquiryList', () => {
     expect(component.filteredEnquiries).toHaveLength(0);
   });
 
-  it('hides closed enquiries by default and supports trash and restore', () => {
+  it('shows all enquiries by default and supports trash and restore', () => {
     const enquiry = enquiryService.addEnquiry({
       customerName: 'Avery Chen',
       customerEmail: 'avery@example.com',
@@ -74,6 +74,8 @@ describe('EnquiryList', () => {
       enquiryDetails: 'Duplicate request',
     });
 
+    expect(component.filteredEnquiries).toHaveLength(1);
+    component.recordView = 'open';
     expect(component.filteredEnquiries).toHaveLength(0);
     component.recordView = 'all';
     expect(component.filteredEnquiries).toHaveLength(1);
@@ -146,8 +148,22 @@ describe('EnquiryList', () => {
 
     expect(component.getStatusClass(enquiry.statusId)).toBe('status-custom');
     expect(component.getStatusStyle(enquiry.statusId)).toEqual({
-      backgroundColor: '#e2f1ec',
-      color: '#287c79',
+      backgroundColor: '#f4eafa',
+      color: '#75489a',
     });
+  });
+
+  it('uses the selected palette for the new workflow status capsules', () => {
+    const statuses = statusService.getActiveStatuses();
+
+    expect(statuses.map(status => component.getStatusClass(status.statusId))).toEqual([
+      'status-new',
+      'status-in-progress',
+      'status-pending',
+      'status-on-hold',
+      'status-resolved',
+      'status-closed',
+      'status-rejected',
+    ]);
   });
 });

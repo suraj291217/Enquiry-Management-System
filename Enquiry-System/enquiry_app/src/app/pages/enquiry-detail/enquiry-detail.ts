@@ -61,6 +61,10 @@ export class EnquiryDetail {
     return this.statusService.getStatusById(statusId)?.statusName ?? 'Unknown status';
   }
 
+  getStatusClass(statusId: number): string {
+    return this.statusService.getBadgeClass(statusId);
+  }
+
   async saveDetails(): Promise<void> {
     const enquiry = this.enquiry();
     const statusId = Number(this.editStatusId);

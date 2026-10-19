@@ -161,13 +161,13 @@
     "customerEmail": "roshin@gmail.com",
     "customerPhone": "8286728132",
     "categoryId": 2,
-    "statusId": 3,
+    "statusId": 5,
     "enquiryType": "Technical",
     "enquiryDetails": "testing APIs",
     "enquiryId": 14,
     "createdDate": "2026-10-13T11:21:55.999Z",
     "resolutionNotes": "Okay, test and let us know your experience",
-    "updatedDate": "2026-10-13T11:23:46.597Z"
+    "updatedDate": "2026-10-19T06:27:21.998Z"
   },
   {
     "customerName": "Ankit Lamba",
@@ -209,13 +209,13 @@
     "customerEmail": "punith@gmail.com",
     "customerPhone": "823972837",
     "categoryId": 1,
-    "statusId": 2,
+    "statusId": 8,
     "enquiryType": "Technical",
     "enquiryDetails": "testing tailwind",
     "enquiryId": 18,
     "createdDate": "2026-10-14T05:26:33.389Z",
     "resolutionNotes": "",
-    "updatedDate": "2026-10-14T05:27:28.631Z"
+    "updatedDate": "2026-10-19T06:55:18.148Z"
   },
   {
     "customerName": "Sanat Nagpal",
@@ -264,25 +264,38 @@
     "customerEmail": "madhur@gmail.com",
     "customerPhone": "948201931",
     "categoryId": 2,
-    "statusId": 3,
+    "statusId": 2,
     "enquiryType": "Technical",
     "enquiryDetails": "testing APIs",
     "enquiryId": 22,
     "createdDate": "2026-10-14T07:23:22.721Z",
     "resolutionNotes": "thanks for testing",
-    "updatedDate": "2026-10-14T07:24:27.374Z"
+    "updatedDate": "2026-10-19T06:19:38.734Z"
   },
   {
     "customerName": "Abraham John",
     "customerEmail": "john@gmail.com",
     "customerPhone": "746839237",
     "categoryId": 3,
-    "statusId": 3,
+    "statusId": 4,
     "enquiryType": "Technical",
     "enquiryDetails": "testing tailwind and functionalities",
     "enquiryId": 23,
     "createdDate": "2026-10-15T02:34:25.801Z",
     "resolutionNotes": "thanks for informing",
-    "updatedDate": "2026-10-15T02:36:30.846Z"
+    "updatedDate": "2026-10-19T06:43:46.299Z"
+  },
+  {
+    "customerName": "Mithun R",
+    "customerEmail": "mithun@gmail.com",
+    "customerPhone": "7738273627",
+    "categoryId": 2,
+    "statusId": 2,
+    "enquiryType": "Sales",
+    "enquiryDetails": "testing expansion panel",
+    "enquiryId": 24,
+    "createdDate": "2026-10-18T15:43:48.789Z",
+    "resolutionNotes": "share your experience with us!",
+    "updatedDate": "2026-10-19T06:55:30.264Z"
   }
 ]

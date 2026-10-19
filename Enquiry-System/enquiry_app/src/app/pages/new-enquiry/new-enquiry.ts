@@ -290,9 +290,7 @@ export class NewEnquiry implements OnInit {
   }
 
   getTrackingStatusClass(statusId: number): string {
-    const status = this.statusService.getStatusById(statusId);
-    const code = status?.statusCode?.toLowerCase() ?? status?.statusName.toLowerCase().replaceAll(' ', '-') ?? 'unknown';
-    return `status-${code.replaceAll('_', '-')}`;
+    return this.statusService.getBadgeClass(statusId);
   }
 
   getTrackingCategoryName(categoryId: number): string {

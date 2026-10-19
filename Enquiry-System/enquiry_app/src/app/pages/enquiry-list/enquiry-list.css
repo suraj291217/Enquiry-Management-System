@@ -303,10 +303,6 @@
 	font-weight: 700;
 }
 
-.status-new { background: #e7f2ff; color: #2866a7; }
-.status-in-progress { background: #fff2cf; color: #89600a; }
-.status-resolved { background: #e2f4e9; color: #287348; }
-.status-closed { background: #edf0ef; color: #59645f; }
 .status-custom { border: 1px solid rgba(24, 49, 59, 0.08); }
 
 .enquiry-table .action-button {

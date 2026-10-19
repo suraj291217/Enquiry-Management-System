@@ -71,9 +71,7 @@
 
 .status-pill {
   flex: 0 0 auto;
-  background: #e2f1ec;
   border-radius: 20px;
-  color: var(--detail-green);
   font-size: 0.7rem;
   font-weight: 700;
   padding: 8px 13px;

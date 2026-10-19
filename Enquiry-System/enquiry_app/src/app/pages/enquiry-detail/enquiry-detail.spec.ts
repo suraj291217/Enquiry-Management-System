@@ -49,6 +49,7 @@ describe('EnquiryDetail', () => {
     expect(fixture.componentInstance.enquiry()?.customerName).toBe('Avery Chen');
     expect(fixture.nativeElement.textContent).toContain('avery@example.com');
     expect(fixture.nativeElement.textContent).toContain('Need help with an order');
+    expect(fixture.nativeElement.querySelector('.detail-heading .status-pill')?.classList.contains('status-new')).toBe(true);
   });
 
   it('confirms before saving the selected status and admin notes', async () => {

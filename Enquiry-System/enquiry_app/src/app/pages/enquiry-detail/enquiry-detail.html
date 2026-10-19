@@ -13,7 +13,7 @@
         <h1>Enquiry details</h1>
         <p class="page-intro">Review the customer request and update its progress.</p>
       </div>
-      <span class="status-pill">{{ getStatusName(record.statusId) }}</span>
+      <span class="status-pill" [class]="getStatusClass(record.statusId)">{{ getStatusName(record.statusId) }}</span>
     </header>
 
     <div class="detail-layout">
