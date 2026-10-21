@@ -1,6 +1,8 @@
 export interface IUser {
   userId: number;
   email: string;
+  name: string;
+  phone: string;
   role: 'admin' | 'user';
-  loginTime: Date;
+  loginTime: string | Date;
 }

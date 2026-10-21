@@ -1,17 +1,24 @@
-import { Injectable, signal } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
 import { IUser } from '../model/user.model';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
+
+export interface CustomerRegistration {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+}
+
+export type RegisteredCustomer = Pick<IUser, 'userId' | 'name' | 'email' | 'phone' | 'role'>;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private currentUser = signal<IUser | null>(null);
-  private readonly  STORAGE_KEY = 'enquiryApp';
-  private readonly USER_DATA_KEY = 'enquiryAppUserData';
-
-  constructor() {
-    this.loadUserFromStorage();
-  }
+  private readonly http = inject(HttpClient);
+  private sessionResolved = false;
 
   getCurrentUser = this.currentUser.asReadonly();
 
@@ -19,49 +26,56 @@ export class AuthService {
     return this.currentUser() !== null;
   }
 
-  login(email: string): boolean {
-    const validCredentials = [
-      { email: 'admin@gmail.com', role: 'admin' as const },
-      { email: 'admin', role: 'admin' as const }
-    ];
-
-    const credential = validCredentials.find(c => c.email.toLowerCase() === email.toLowerCase());
-
-    if (credential) {
-      const user: IUser = {
-        userId: 1,
-        email: email,
-        role: credential.role,
-        loginTime: new Date()
-      };
-
-      this.currentUser.set(user);
-      localStorage.setItem(this.STORAGE_KEY, email);
-      localStorage.setItem(this.USER_DATA_KEY, JSON.stringify(user));
-      return true;
-    }
-
-    return false;
+  hasRole(role: IUser['role']): boolean {
+    return this.currentUser()?.role === role;
   }
 
-  logout(): void {
+  login(email: string, password: string): Observable<IUser> {
+    return this.http.post<IUser>('/api/auth/login', { email, password }).pipe(
+      tap(user => this.setCurrentUser(user)),
+    );
+  }
+
+  register(details: CustomerRegistration): Observable<RegisteredCustomer> {
+    return this.http.post<RegisteredCustomer>('/api/auth/register', details);
+  }
+
+  restoreSession(): Observable<IUser | null> {
+    if (this.sessionResolved) return of(this.currentUser());
+
+    return this.http.get<IUser>('/api/auth/me').pipe(
+      tap(user => this.setCurrentUser(user)),
+      catchError((error: unknown) => {
+        if (error instanceof HttpErrorResponse && error.status === 401) {
+          this.currentUser.set(null);
+          this.sessionResolved = true;
+          return of(null);
+        }
+        return throwError(() => error);
+      }),
+    );
+  }
+
+  logout(): Observable<void> {
+    return this.http.post('/api/auth/logout', {}).pipe(
+      tap(() => {
+        this.currentUser.set(null);
+        this.sessionResolved = true;
+        sessionStorage.removeItem('enquiryApp_enquiryDraft');
+        sessionStorage.removeItem('enquiryApp_trackingDraft');
+      }),
+      map(() => undefined),
+    );
+  }
+
+  clearSession(): void {
     this.currentUser.set(null);
-    localStorage.removeItem(this.STORAGE_KEY);
-    localStorage.removeItem(this.USER_DATA_KEY);
+    this.sessionResolved = true;
   }
 
-  private loadUserFromStorage(): void {
-    const email = localStorage.getItem(this.STORAGE_KEY);
-    const userData = localStorage.getItem(this.USER_DATA_KEY);
-
-    if (email && userData) {
-      try {
-        const user: IUser = JSON.parse(userData);
-        this.currentUser.set(user);
-      } catch {
-        this.logout();
-      }
-    }
+  private setCurrentUser(user: IUser): void {
+    this.currentUser.set(user);
+    this.sessionResolved = true;
   }
 
   getUserEmail(): string {

@@ -1,16 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { MatStepper } from '@angular/material/stepper';
 import { NewEnquiry } from './new-enquiry';
 import { EnquiryService } from '../../services/enquiry.service';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { apiLoadingInterceptor } from '../../services/api-loading.interceptor';
 import { ApiLoadingService } from '../../services/api-loading.service';
+import { ConfirmationService } from '../../services/confirmation.service';
 
 describe('NewEnquiry', () => {
   let component: NewEnquiry;
   let fixture: ComponentFixture<NewEnquiry>;
   let enquiryService: EnquiryService;
+  let confirmationService: ConfirmationService;
+  let navigate: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     localStorage.removeItem('enquiryApp_enquiries');
@@ -18,6 +23,7 @@ describe('NewEnquiry', () => {
     localStorage.removeItem('enquiryApp_statuses');
     sessionStorage.removeItem('enquiryApp_enquiryDraft');
     sessionStorage.removeItem('enquiryApp_trackingDraft');
+    navigate = vi.fn(() => Promise.resolve(true));
     await TestBed.configureTestingModule({
       imports: [NewEnquiry],
       providers: [
@@ -26,7 +32,7 @@ describe('NewEnquiry', () => {
           useValue: {
             url: '/enquiry',
             parseUrl: () => ({ fragment: null }),
-            navigate: () => Promise.resolve(true),
+            navigate,
           },
         },
         provideHttpClient(withInterceptors([apiLoadingInterceptor])),
@@ -35,6 +41,8 @@ describe('NewEnquiry', () => {
     }).compileComponents();
 
     enquiryService = TestBed.inject(EnquiryService);
+    confirmationService = TestBed.inject(ConfirmationService);
+    vi.spyOn(confirmationService, 'confirm').mockResolvedValue(true);
     fixture = TestBed.createComponent(NewEnquiry);
     component = fixture.componentInstance;
     await fixture.whenStable();
@@ -89,10 +97,12 @@ describe('NewEnquiry', () => {
       message: 'Question about an order',
     });
 
-    component.onSubmit();
+    const submit = component.onSubmit();
+    await fixture.whenStable();
     expect(component.submitting()).toBe(true);
 
     httpTesting.expectOne('/api/enquiries').error(new ProgressEvent('error'));
+    await submit;
     await fixture.whenStable();
 
     expect(component.submitting()).toBe(false);
@@ -113,7 +123,8 @@ describe('NewEnquiry', () => {
       message: 'Question about an order',
     });
 
-    component.onSubmit();
+    const submit = component.onSubmit();
+    await fixture.whenStable();
     httpTesting.expectOne('/api/enquiries').flush({
       enquiryId: 1,
       customerName: 'Avery Chen',
@@ -125,6 +136,7 @@ describe('NewEnquiry', () => {
       enquiryDetails: 'Question about an order',
       createdDate: '2026-10-04T00:00:00.000Z',
     }, { status: 201, statusText: 'Created' });
+    await submit;
     await fixture.whenStable();
     fixture.detectChanges();
 
@@ -135,17 +147,47 @@ describe('NewEnquiry', () => {
     expect(component.enquiryForm.untouched).toBe(true);
   });
 
+  it('clears submit-wide touched state when the user edits the form and marks it again on another invalid submit', () => {
+    component.onSubmit();
+    expect(component.enquiryForm.touched).toBe(true);
+
+    component.enquiryForm.controls.customerName.setValue('Avery Chen');
+    component.saveEnquiryDraft();
+    expect(component.enquiryForm.untouched).toBe(true);
+
+    component.onSubmit();
+    expect(component.enquiryForm.touched).toBe(true);
+  });
+
+  it('returns to the top of the enquiry home with a clean form when Done closes the success modal', async () => {
+    component.showSuccessModal = true;
+    component.enquiryForm.markAllAsTouched();
+    const stepper = fixture.debugElement.query(By.directive(MatStepper)).componentInstance as MatStepper;
+    stepper.selectedIndex = 1;
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
+
+    component.closeModal();
+    await Promise.resolve();
+
+    expect(component.showSuccessModal).toBe(false);
+    expect(component.activePortalTab()).toBe('submit');
+    expect(navigate).toHaveBeenCalledWith(['/customer/portal']);
+    expect(component.enquiryForm.untouched).toBe(true);
+    expect(component.enquiryForm.pristine).toBe(true);
+    expect(stepper.selectedIndex).toBe(0);
+    expect(scrollTo).toHaveBeenCalledWith(0, 0);
+  });
+
   it('looks up status with GET and clears loading state on a REST 404', () => {
     const loadingService = TestBed.inject(ApiLoadingService);
     const httpTesting = TestBed.inject(HttpTestingController);
     let statusCode = 0;
-    enquiryService.lookupCustomerEnquiryStatus('ENQ-0001', 'missing@example.com')
+    enquiryService.lookupCustomerEnquiryStatus('ENQ-0001')
       .subscribe({ error: error => statusCode = error.status });
 
     const request = httpTesting.expectOne(
       request => request.url === '/api/enquiries'
-        && request.params.get('code') === 'ENQ-0001'
-        && request.params.get('email') === 'missing@example.com',
+        && request.params.get('code') === 'ENQ-0001',
     );
     expect(request.request.method).toBe('GET');
     request.flush(
@@ -157,7 +199,7 @@ describe('NewEnquiry', () => {
     expect(loadingService.isLoading()).toBe(false);
   });
 
-  it('shows the admin response for an enquiry matched by ID and email without exposing contact details', async () => {
+  it('shows the admin response for an enquiry matched by ID within the signed-in account', async () => {
     const enquiry = enquiryService.addEnquiry({
       customerName: 'Avery Chen',
       customerEmail: 'avery@example.com',
@@ -172,7 +214,7 @@ describe('NewEnquiry', () => {
     const httpTesting = TestBed.inject(HttpTestingController);
     component.activePortalTab.set('track');
     fixture.detectChanges();
-    component.trackingForm = { enquiryId: 'ENQ-0001', email: 'AVERY@example.com' };
+    component.trackingForm = { enquiryId: 'ENQ-0001' };
     component.lookupEnquiry(new Event('submit'));
     const request = httpTesting.expectOne(
       request => request.url === '/api/enquiries'
@@ -212,6 +254,72 @@ describe('NewEnquiry', () => {
     expect(component.isContactInformationComplete()).toBe(true);
   });
 
+  it('asks for confirmation before submitting the enquiry', async () => {
+    component.enquiryForm.setValue({
+      customerName: 'Avery Chen',
+      customerPhone: '5550100',
+      customerEmail: 'avery@example.com',
+      categoryId: '1',
+      enquiryType: 'General',
+      message: 'Question about an order',
+    });
+
+    const submit = component.onSubmit();
+    await fixture.whenStable();
+    const request = TestBed.inject(HttpTestingController).expectOne('/api/enquiries');
+    expect(confirmationService.confirm).toHaveBeenCalledWith(expect.objectContaining({
+      title: 'Submit enquiry?',
+      confirmLabel: 'Submit enquiry',
+      cancelLabel: 'Review request',
+    }));
+    request.flush({
+      enquiryId: 1,
+      customerName: 'Avery Chen',
+      customerEmail: 'avery@example.com',
+      customerPhone: '5550100',
+      categoryId: 1,
+      statusId: 1,
+      enquiryType: 'General',
+      enquiryDetails: 'Question about an order',
+      createdDate: '2026-10-04T00:00:00.000Z',
+    }, { status: 201, statusText: 'Created' });
+    await submit;
+  });
+
+  it('does not submit an enquiry when confirmation is cancelled', async () => {
+    vi.mocked(confirmationService.confirm).mockResolvedValue(false);
+    component.enquiryForm.setValue({
+      customerName: 'Avery Chen',
+      customerPhone: '5550100',
+      customerEmail: 'avery@example.com',
+      categoryId: '1',
+      enquiryType: 'General',
+      message: 'Question about an order',
+    });
+
+    await component.onSubmit();
+
+    expect(component.submitting()).toBe(false);
+    TestBed.inject(HttpTestingController).expectNone('/api/enquiries');
+  });
+
+  it('allows a signed-in customer with a disabled valid email to continue to request details', () => {
+    component.enquiryForm.patchValue({
+      customerName: 'Avery Chen',
+      customerPhone: '5550100',
+      customerEmail: 'avery@example.com',
+    });
+    component.enquiryForm.controls.customerEmail.disable();
+    fixture.detectChanges();
+
+    const continueButton = fixture.nativeElement.querySelector('.step-actions button') as HTMLButtonElement;
+    const stepper = fixture.debugElement.query(By.directive(MatStepper)).componentInstance as MatStepper;
+    continueButton.click();
+    fixture.detectChanges();
+
+    expect(stepper.selectedIndex).toBe(1);
+  });
+
   it('does not return an enquiry for a mismatched email or a trashed enquiry', () => {
     const enquiry = enquiryService.addEnquiry({
       customerName: 'Avery Chen',
@@ -242,7 +350,7 @@ describe('NewEnquiry', () => {
       customerEmail: 'avery@example.com',
     });
     component.saveEnquiryDraft();
-    component.trackingForm = { enquiryId: 'ENQ-0012', email: 'avery@example.com' };
+    component.trackingForm = { enquiryId: 'ENQ-0012' };
     component.saveTrackingDraft();
 
     fixture.destroy();
@@ -255,7 +363,7 @@ describe('NewEnquiry', () => {
       customerName: 'Avery Chen',
       customerEmail: 'avery@example.com',
     });
-    expect(component.trackingForm).toEqual({ enquiryId: 'ENQ-0012', email: 'avery@example.com' });
+    expect(component.trackingForm).toEqual({ enquiryId: 'ENQ-0012' });
 
     component.resetForm();
     expect(sessionStorage.getItem('enquiryApp_enquiryDraft')).toBeNull();

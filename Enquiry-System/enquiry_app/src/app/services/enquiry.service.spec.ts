@@ -47,13 +47,12 @@ describe('EnquiryService', () => {
     expect(JSON.parse(localStorage.getItem('enquiryApp_enquiries')!)).toHaveLength(1);
   });
 
-  it('looks up a customer enquiry using the supplied code and email', () => {
-    service.lookupCustomerEnquiryStatus('ENQ-0042', 'ada@example.com').subscribe();
+  it('looks up a customer enquiry using the signed-in customer session and code', () => {
+    service.lookupCustomerEnquiryStatus('ENQ-0042').subscribe();
 
     const request = httpTesting.expectOne(
       request => request.url === '/api/enquiries'
-        && request.params.get('code') === 'ENQ-0042'
-        && request.params.get('email') === 'ada@example.com',
+        && request.params.get('code') === 'ENQ-0042',
     );
     expect(request.request.method).toBe('GET');
     request.flush({

@@ -1,19 +1,40 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard';
+import { authGuard, customerGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'enquiry',
+    redirectTo: 'customer/login',
     pathMatch: 'full',
   },
   {
     path: 'home',
-    redirectTo: 'enquiry',
+    redirectTo: 'customer/login',
   },
   {
     path: 'enquiry',
     loadComponent: () => import('./pages/new-enquiry/new-enquiry').then(module => module.NewEnquiry),
+    canActivate: [customerGuard],
+  },
+  {
+    path: 'customer',
+    redirectTo: 'customer/login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'customer/login',
+    data: { mode: 'login' },
+    loadComponent: () => import('./pages/customer-access/customer-access').then(module => module.CustomerAccess),
+  },
+  {
+    path: 'customer/register',
+    data: { mode: 'register' },
+    loadComponent: () => import('./pages/customer-access/customer-access').then(module => module.CustomerAccess),
+  },
+  {
+    path: 'customer/portal',
+    loadComponent: () => import('./pages/new-enquiry/new-enquiry').then(module => module.NewEnquiry),
+    canActivate: [customerGuard],
   },
   {
     path: 'admin',
@@ -65,6 +86,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'enquiry',
+    redirectTo: 'customer/login',
   },
 ];

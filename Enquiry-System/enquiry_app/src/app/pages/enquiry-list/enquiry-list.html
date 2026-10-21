@@ -17,6 +17,9 @@
 			<span class="header-icon" aria-hidden="true">&#9776;</span>
 		</div>
 		<div class="workspace-card-body">
+			@if (loadError()) {
+				<p class="request-error" role="alert">{{ loadError() }}</p>
+			}
 			<mat-expansion-panel class="enquiry-filter-panel">
 				<mat-expansion-panel-header>
 					<mat-panel-title>
@@ -71,7 +74,7 @@
 				<ng-container matColumnDef="enquiry">
 					<th mat-header-cell *matHeaderCellDef scope="col">Enquiry</th>
 					<td mat-cell *matCellDef="let enquiry">
-						<button class="enquiry-code category-id" type="button" (click)="openDetails(enquiry)">{{ getEnquiryCode(enquiry) }}</button>
+						<button class="enquiry-code" type="button" (click)="openDetails(enquiry)">{{ getEnquiryCode(enquiry) }}</button>
 					</td>
 				</ng-container>
 

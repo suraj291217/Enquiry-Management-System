@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject, OnInit, OnDestroy, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Common } from '../../services/common';
@@ -7,6 +7,7 @@ import { EnquiryService } from '../../services/enquiry.service';
 import { StatusService } from '../../services/status.service';
 import { ConfirmationService } from '../../services/confirmation.service';
 import { Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   imports: [FormsModule, RouterLink],
@@ -24,6 +25,7 @@ export class Login implements OnInit, OnDestroy {
   emailError = '';
   loginError = '';
   showPassword = false;
+  loginPending = signal(false);
 
   private subscription = new Subscription();
 
@@ -67,6 +69,12 @@ export class Login implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
+    this.subscription.add(this.authService.restoreSession().subscribe({
+      next: user => {
+        if (user?.role === 'user') this.router.navigate(['/customer/portal']);
+      },
+      error: () => this.loginError = 'Unable to verify your session. Please try again.',
+    }));
     // Subscribe to auth changes
     this.subscription.add(
       this.commonSr.$onLogin.subscribe(() => {
@@ -80,7 +88,7 @@ export class Login implements OnInit, OnDestroy {
   }
 
   get currentLoggedUser(): string {
-    return this.authService.getUserEmail();
+    return this.authService.hasRole('admin') ? this.authService.getUserEmail() : '';
   }
 
   get isLoggedIn(): boolean {
@@ -116,10 +124,10 @@ export class Login implements OnInit, OnDestroy {
     this.loginError = '';
 
     const email = (this.userLogin.userName || '').trim();
-    const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const isAdminUsername = email.toLowerCase() === 'admin';
-    if (!email || (!isAdminUsername && !gmailPattern.test(email))) {
+    if (!email || (!isAdminUsername && !emailPattern.test(email))) {
       this.emailError = 'Enter a valid email address';
       return;
     }
@@ -129,18 +137,20 @@ export class Login implements OnInit, OnDestroy {
       return;
     }
 
-    if (
-      (email.toLowerCase() === 'admin@gmail.com' || email.toLowerCase() === 'admin') &&
-      this.userLogin.password === 'password'
-    ) {
-      const loginSuccess = this.authService.login(email);
-      if (loginSuccess) {
+    this.loginPending.set(true);
+    this.authService.login(email, this.userLogin.password).subscribe({
+      next: user => {
+        this.loginPending.set(false);
         this.commonSr.$onLogin.next();
-        this.router.navigate(['/admin/enquiries']);
-      }
-    } else {
-      this.loginError = 'Invalid credentials';
-    }
+        this.router.navigate([user.role === 'admin' ? '/admin/enquiries' : '/customer/portal']);
+      },
+      error: error => {
+        this.loginPending.set(false);
+        this.loginError = error instanceof HttpErrorResponse && typeof error.error?.message === 'string'
+          ? error.error.message
+          : 'We could not sign you in. Please try again.';
+      },
+    });
   }
 
   async onLogout(): Promise<void> {
@@ -153,13 +163,17 @@ export class Login implements OnInit, OnDestroy {
     });
     if (!confirmed) return;
 
-    this.authService.logout();
-    this.userLogin.userName = '';
-    this.userLogin.password = '';
-    this.emailError = '';
-    this.loginError = '';
-    this.commonSr.$onLogin.next();
-    this.router.navigate(['/enquiry']);
+    this.authService.logout().subscribe({
+      next: () => {
+        this.userLogin.userName = '';
+        this.userLogin.password = '';
+        this.emailError = '';
+        this.loginError = '';
+        this.commonSr.$onLogin.next();
+        this.router.navigate(['/customer/login']);
+      },
+      error: () => this.loginError = 'We could not sign you out. Please try again.',
+    });
   }
 
   goToDashboard(): void {

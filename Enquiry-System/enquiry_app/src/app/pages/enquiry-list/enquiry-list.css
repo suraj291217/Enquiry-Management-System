@@ -152,12 +152,6 @@
 	border-bottom: 0;
 }
 
-.category-id {
-	color: #a0adac !important;
-	font-family: Consolas, monospace;
-	font-size: 0.72rem !important;
-}
-
 .category-page .form-field label {
 	color: var(--category-ink);
 	display: block;
@@ -277,10 +271,26 @@
 }
 
 .enquiry-code {
-	padding: 0;
-	border: 0;
-	background: transparent;
+	padding: 6px 9px;
+	border: 1px solid #d9ebe4;
+	border-radius: 6px;
+	background: #edf7f3;
+	color: #286c5c;
 	cursor: pointer;
+	font-family: Consolas, monospace;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.025em;
+}
+
+.enquiry-code:hover {
+	background: #e2f1eb;
+	border-color: #b9dacf;
+}
+
+.enquiry-code:focus-visible {
+	outline: 2px solid var(--category-green);
+	outline-offset: 2px;
 }
 
 .customer-name,

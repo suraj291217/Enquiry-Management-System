@@ -1,0 +1,107 @@
+<main class="customer-access-page">
+	<section class="customer-access-shell" aria-label="Customer account">
+		<div class="customer-access-story">
+			<a class="customer-brand" routerLink="/customer/login" aria-label="Enquiry Desk home">
+				<span class="customer-brand-mark" aria-hidden="true"><span></span><i></i></span>
+				<span>Enquiry <small>DESK</small></span>
+			</a>
+			<div class="story-copy">
+				<p class="story-kicker">Support, made simple</p>
+				<h1>Every answer starts with a conversation.</h1>
+				<p>Sign in to send a request, follow its progress, and keep your support history in one place.</p>
+			</div>
+			<div class="story-footer"><span aria-hidden="true"></span>Private, personal support for every customer</div>
+		</div>
+
+		<div class="customer-access-form">
+			<div class="form-topline">
+				<span>Customer portal</span>
+			</div>
+
+			@if (mode() === 'login') {
+				<div class="form-heading">
+					<p class="form-kicker">Welcome back</p>
+					<h2>Sign in to your account</h2>
+					<p>Continue to your requests and support updates.</p>
+				</div>
+				<form class="access-form" (ngSubmit)="signIn()" novalidate>
+					<div class="access-field">
+						<label for="customerEmail">Email address</label>
+						<input id="customerEmail" name="email" type="email" [(ngModel)]="loginForm.email" autocomplete="email" placeholder="you@gmail.com" required />
+					</div>
+					<div class="access-field">
+						<div class="access-field-label-row">
+							<label for="customerPassword">Password</label>
+							<a class="forgot-password-link" href="#forgot-password">Forgot password?</a>
+						</div>
+						<div class="access-password-wrap">
+							<input id="customerPassword" name="password" [type]="showLoginPassword ? 'text' : 'password'" [(ngModel)]="loginForm.password" autocomplete="current-password" placeholder="Enter your password" required />
+							<button class="password-visibility-toggle" type="button" [attr.aria-label]="showLoginPassword ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showLoginPassword" (click)="toggleLoginPasswordVisibility()">
+								<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+									<path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z" />
+									<circle cx="12" cy="12" r="2.6" />
+									@if (showLoginPassword) { <path class="visibility-slash" d="m4 4 16 16" /> }
+								</svg>
+							</button>
+						</div>
+					</div>
+					@if (error()) { <p class="access-error" role="alert">{{ error() }}</p> }
+					<button type="submit" [disabled]="submitting()">{{ submitting() ? 'Signing in…' : 'Sign in to your portal' }} <span aria-hidden="true">→</span></button>
+				</form>
+				<p class="form-switch">New to Enquiry Desk? <a routerLink="/customer/register">Create an account</a></p>
+			} @else {
+				@if (registrationSuccess()) {
+					<section class="registration-success" aria-labelledby="registration-success-title" role="status">
+						<span class="registration-success-icon" aria-hidden="true">✓</span>
+						<div class="form-heading">
+							<p class="form-kicker">You're all set</p>
+							<h2 id="registration-success-title">Account created</h2>
+							<p>Your account is ready. Sign in with <strong>{{ registeredEmail() }}</strong> to submit and track your enquiries.</p>
+						</div>
+						<button class="success-signin-button" type="button" (click)="goToSignIn()">
+							Go to customer sign in <span aria-hidden="true">→</span>
+						</button>
+					</section>
+				} @else {
+					<div class="form-heading">
+						<p class="form-kicker">Get started</p>
+						<h2>Create your account</h2>
+						<p>Use one secure account to submit and track your enquiries.</p>
+					</div>
+					<form class="access-form registration-form" (ngSubmit)="register()" novalidate>
+						<div class="access-field">
+							<label for="customerName">Full name</label>
+							<input id="customerName" name="name" type="text" [(ngModel)]="registrationForm.name" autocomplete="name" placeholder="Your name" required />
+						</div>
+						<div class="access-field access-field-half">
+							<label for="registrationEmail">Email address</label>
+							<input id="registrationEmail" name="email" type="email" [(ngModel)]="registrationForm.email" autocomplete="email" placeholder="you@gmail.com" required />
+						</div>
+						<div class="access-field access-field-half">
+							<label for="customerPhone">Phone number</label>
+							<input id="customerPhone" name="phone" type="tel" [(ngModel)]="registrationForm.phone" autocomplete="tel" placeholder="+91 555 010 0123" required />
+						</div>
+						<div class="access-field">
+							<label for="registrationPassword">Password</label>
+							<div class="access-password-wrap">
+								<input id="registrationPassword" name="password" [type]="showRegistrationPassword ? 'text' : 'password'" [(ngModel)]="registrationForm.password" autocomplete="new-password" placeholder="At least 8 characters" minlength="8" required />
+								<button class="password-visibility-toggle" type="button" [attr.aria-label]="showRegistrationPassword ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showRegistrationPassword" (click)="toggleRegistrationPasswordVisibility()">
+									<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+										<path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z" />
+										<circle cx="12" cy="12" r="2.6" />
+										@if (showRegistrationPassword) { <path class="visibility-slash" d="m4 4 16 16" /> }
+									</svg>
+								</button>
+							</div>
+						</div>
+						@if (error()) { <p class="access-error" role="alert">{{ error() }}</p> }
+						<button type="submit" [disabled]="submitting()">{{ submitting() ? 'Creating account…' : 'Create customer account' }} <span aria-hidden="true">→</span></button>
+					</form>
+					<p class="form-switch">Already have an account? <a routerLink="/customer/login">Sign in</a></p>
+				}
+			}
+
+			<p class="form-assurance"><span aria-hidden="true">◈</span> Your account keeps your enquiry history private.</p>
+		</div>
+	</section>
+</main>

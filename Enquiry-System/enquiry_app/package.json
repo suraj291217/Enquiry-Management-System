@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "start:api": "node server.mjs",
+    "test:api": "node --test server.test.mjs",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

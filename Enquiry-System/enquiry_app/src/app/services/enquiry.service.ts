@@ -29,8 +29,17 @@ export class EnquiryService {
     );
   }
 
-  lookupCustomerEnquiryStatus(enquiryCode: string, email: string): Observable<ICustomerEnquiryStatus> {
-    const params = new HttpParams().set('code', enquiryCode).set('email', email);
+  loadEnquiries(): Observable<IEnquiry[]> {
+    return this.http.get<IEnquiry[]>('/api/enquiries').pipe(
+      tap(enquiries => {
+        this.enquiriesData.set(enquiries);
+        this.saveToStorage();
+      }),
+    );
+  }
+
+  lookupCustomerEnquiryStatus(enquiryCode: string): Observable<ICustomerEnquiryStatus> {
+    const params = new HttpParams().set('code', enquiryCode);
     return this.http.get<ICustomerEnquiryStatus>('/api/enquiries', { params });
   }
 

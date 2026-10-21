@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 import { Login } from './login';
 import { EnquiryService } from '../../services/enquiry.service';
 import { ConfirmationService } from '../../services/confirmation.service';
@@ -8,6 +10,7 @@ describe('Login', () => {
   let component: Login;
   let fixture: ComponentFixture<Login>;
   let enquiryService: EnquiryService;
+  let httpTesting: HttpTestingController;
 
   beforeEach(async () => {
     localStorage.removeItem('enquiryApp');
@@ -17,13 +20,23 @@ describe('Login', () => {
     localStorage.removeItem('enquiryApp_statuses');
     await TestBed.configureTestingModule({
       imports: [Login],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
     enquiryService = TestBed.inject(EnquiryService);
+    httpTesting = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(Login);
     component = fixture.componentInstance;
+    fixture.detectChanges();
+    httpTesting.expectOne('/api/auth/me').flush(
+      { message: 'Sign in to continue.' },
+      { status: 401, statusText: 'Unauthorized' },
+    );
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    httpTesting.verify();
   });
 
   it('should create', () => {
@@ -89,7 +102,15 @@ describe('Login', () => {
   });
 
   it('shows the current session start time', () => {
-    component.authService.login('admin@gmail.com');
+    component.authService.login('admin@gmail.com', 'password').subscribe();
+    httpTesting.expectOne('/api/auth/login').flush({
+      userId: 1,
+      email: 'admin@gmail.com',
+      name: 'Admin',
+      phone: '',
+      role: 'admin',
+      loginTime: new Date().toISOString(),
+    });
 
     expect(component.sessionStartedLabel).toContain('Today at');
     expect(component.sessionStartedLabel).toContain('(Active)');
@@ -102,13 +123,29 @@ describe('Login', () => {
     component.userLogin.password = 'password';
 
     form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    httpTesting.expectOne('/api/auth/login').flush({
+      userId: 1,
+      email: 'admin',
+      name: 'Admin',
+      phone: '',
+      role: 'admin',
+      loginTime: new Date().toISOString(),
+    });
 
     expect(component.authService.isLoggedIn()).toBe(true);
     expect(navigateSpy).toHaveBeenCalledWith(['/admin/enquiries']);
   });
 
   it('keeps the admin signed in when sign-out confirmation is cancelled', async () => {
-    component.authService.login('admin@gmail.com');
+    component.authService.login('admin@gmail.com', 'password').subscribe();
+    httpTesting.expectOne('/api/auth/login').flush({
+      userId: 1,
+      email: 'admin@gmail.com',
+      name: 'Admin',
+      phone: '',
+      role: 'admin',
+      loginTime: new Date().toISOString(),
+    });
 
     const signOut = component.onLogout();
     const confirmationService = TestBed.inject(ConfirmationService);

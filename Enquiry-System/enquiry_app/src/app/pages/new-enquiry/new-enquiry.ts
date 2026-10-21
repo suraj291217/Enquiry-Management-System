@@ -5,6 +5,7 @@ import { ToastService } from '../../services/toast.service';
 import { CommonModule } from '@angular/common';
 import { CategoryService } from '../../services/category.service';
 import { EnquiryService } from '../../services/enquiry.service';
+import { AuthService } from '../../services/auth.service';
 import { StatusService } from '../../services/status.service';
 import { ICustomerEnquiryStatus } from '../../model/enquiry.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,6 +16,7 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ConfirmationService } from '../../services/confirmation.service';
 
 @Component({
   imports: [FormsModule, ReactiveFormsModule, CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatStepperModule, MatSnackBarModule],
@@ -25,22 +27,25 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class NewEnquiry implements OnInit {
   private readonly ENQUIRY_DRAFT_KEY = 'enquiryApp_enquiryDraft';
   private readonly TRACKING_DRAFT_KEY = 'enquiryApp_trackingDraft';
+  private hasMarkedFormTouchedAfterSubmit = false;
 
   toastService = inject(ToastService);
   categoryService = inject(CategoryService);
   enquiryService = inject(EnquiryService);
   statusService = inject(StatusService);
+  private readonly authService = inject(AuthService);
+  private readonly confirmationService = inject(ConfirmationService);
   private readonly router = inject(Router);
   private readonly formBuilder = inject(FormBuilder);
 
   @ViewChild('enquiryFormDirective') private enquiryFormDirective?: FormGroupDirective;
+  @ViewChild('stepper') private stepper?: MatStepper;
 
   showSuccessModal = false;
   submittedEnquiryId: string = '';
   submittedCustomerName = '';
-  submittedCustomerEmail = '';
   activePortalTab = signal<'submit' | 'track'>('submit');
-  trackingForm = { enquiryId: '', email: '' };
+  trackingForm = { enquiryId: '' };
   trackingResult = signal<ICustomerEnquiryStatus | null>(null);
   trackingError = signal('');
   submitting = signal(false);
@@ -51,9 +56,10 @@ export class NewEnquiry implements OnInit {
 
   ngOnInit(): void {
     this.restoreSessionDrafts();
+    this.setCustomerDetails();
     const fragment = this.router.parseUrl(this.router.url).fragment ?? window.location.hash.slice(1);
     this.activateTabFromFragment(fragment, true);
-    if (fragment === 'track-enquiry' && this.trackingForm.enquiryId && this.trackingForm.email) {
+    if (fragment === 'track-enquiry' && this.trackingForm.enquiryId) {
       this.lookupEnquiry(new Event('submit'));
     }
   }
@@ -71,6 +77,10 @@ export class NewEnquiry implements OnInit {
   });
 
   saveEnquiryDraft(): void {
+    if (this.hasMarkedFormTouchedAfterSubmit) {
+      this.enquiryForm.markAsUntouched();
+      this.hasMarkedFormTouchedAfterSubmit = false;
+    }
     sessionStorage.setItem(this.ENQUIRY_DRAFT_KEY, JSON.stringify(this.enquiryForm.getRawValue()));
   }
 
@@ -79,13 +89,13 @@ export class NewEnquiry implements OnInit {
   }
 
   isContactInformationComplete(): boolean {
-    const { customerName, customerPhone, customerEmail } = this.enquiryForm.controls;
+    const { customerName, customerPhone } = this.enquiryForm.controls;
     const phoneDigits = customerPhone.value.replace(/\D/g, '');
     return !!customerName.value.trim()
       && customerPhone.valid
       && phoneDigits.length >= 7
       && phoneDigits.length <= 15
-      && customerEmail.valid;
+      && this.isCustomerEmailValid();
   }
 
   continueToRequestDetails(stepper: MatStepper): void {
@@ -138,7 +148,6 @@ export class NewEnquiry implements OnInit {
         const draft = JSON.parse(trackingDraft) as Partial<typeof this.trackingForm>;
         this.trackingForm = {
           enquiryId: typeof draft.enquiryId === 'string' ? draft.enquiryId : '',
-          email: typeof draft.email === 'string' ? draft.email : '',
         };
       } catch {
         sessionStorage.removeItem(this.TRACKING_DRAFT_KEY);
@@ -146,7 +155,7 @@ export class NewEnquiry implements OnInit {
     }
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.submitting()) return;
     this.apiError.set('');
     const formValue = this.enquiryForm.getRawValue();
@@ -156,12 +165,12 @@ export class NewEnquiry implements OnInit {
     const message = formValue.message.trim();
 
     if (!customerName || !customerPhone || !customerEmail || !message || !formValue.categoryId || !formValue.enquiryType) {
-      this.enquiryForm.markAllAsTouched();
+      this.markFormAllAsTouchedAfterSubmit();
       this.toastService.error('Please fill all required fields');
       return;
     }
 
-    if (this.enquiryForm.invalid) this.enquiryForm.markAllAsTouched();
+    if (this.enquiryForm.invalid) this.markFormAllAsTouchedAfterSubmit();
 
     const phoneDigits = customerPhone.replace(/\D/g, '');
     if (!this.enquiryForm.controls.customerPhone.valid || phoneDigits.length < 7 || phoneDigits.length > 15) {
@@ -169,7 +178,7 @@ export class NewEnquiry implements OnInit {
       return;
     }
 
-    if (!this.enquiryForm.controls.customerEmail.valid) {
+    if (!this.isCustomerEmailValid()) {
       this.toastService.error('Please enter a valid email address');
       return;
     }
@@ -186,6 +195,17 @@ export class NewEnquiry implements OnInit {
     }
 
     this.submitting.set(true);
+    const confirmed = await this.confirmationService.confirm({
+      title: 'Submit enquiry?',
+      message: 'Your request will be sent to our customer support team.',
+      confirmLabel: 'Submit enquiry',
+      cancelLabel: 'Review request',
+    });
+    if (!confirmed) {
+      this.submitting.set(false);
+      return;
+    }
+
     this.enquiryService.submitEnquiry({
       customerName,
       customerEmail,
@@ -198,7 +218,6 @@ export class NewEnquiry implements OnInit {
       next: newEnquiry => {
         this.submittedEnquiryId = `ENQ-${newEnquiry.enquiryId.toString().padStart(4, '0')}`;
         this.submittedCustomerName = customerName;
-        this.submittedCustomerEmail = customerEmail;
         this.toastService.success(`Enquiry ${this.submittedEnquiryId} submitted successfully.`);
         this.showSuccessModal = true;
         this.resetForm();
@@ -217,14 +236,13 @@ export class NewEnquiry implements OnInit {
     if (this.tracking()) return;
 
     const enquiryId = this.trackingForm.enquiryId.trim();
-    const email = this.trackingForm.email.trim();
-    if (!enquiryId || !email) {
-      this.trackingError.set('Enter your enquiry ID and email address.');
+    if (!enquiryId) {
+      this.trackingError.set('Enter your enquiry ID.');
       return;
     }
 
     this.tracking.set(true);
-    this.enquiryService.lookupCustomerEnquiryStatus(enquiryId, email)
+    this.enquiryService.lookupCustomerEnquiryStatus(enquiryId)
       .pipe(finalize(() => this.tracking.set(false)))
       .subscribe({
         next: result => this.trackingResult.set(result),
@@ -248,7 +266,7 @@ export class NewEnquiry implements OnInit {
   selectPortalTab(tab: 'submit' | 'track'): void {
     const fragment = tab === 'track' ? 'track-enquiry' : 'new-enquiry';
     this.activateTabFromFragment(fragment, true);
-    this.router.navigate(['/enquiry'], { fragment });
+    this.router.navigate(['/customer/portal'], { fragment });
   }
 
   private activateTabFromFragment(fragment: string, scroll: boolean): void {
@@ -268,7 +286,6 @@ export class NewEnquiry implements OnInit {
   trackSubmittedEnquiry(): void {
     this.trackingForm = {
       enquiryId: this.submittedEnquiryId,
-      email: this.submittedCustomerEmail,
     };
     this.saveTrackingDraft();
     this.showSuccessModal = false;
@@ -317,10 +334,41 @@ export class NewEnquiry implements OnInit {
     } else {
       this.enquiryForm.reset();
     }
+    this.setCustomerDetails();
+    this.enquiryForm.markAsPristine();
+    this.enquiryForm.markAsUntouched();
+    if (this.stepper) this.stepper.selectedIndex = 0;
+    this.hasMarkedFormTouchedAfterSubmit = false;
     sessionStorage.removeItem(this.ENQUIRY_DRAFT_KEY);
   }
 
   closeModal(): void {
     this.showSuccessModal = false;
+    this.activePortalTab.set('submit');
+    this.resetForm();
+    void this.router.navigate(['/customer/portal']).then(() => window.scrollTo(0, 0));
+  }
+
+  private setCustomerDetails(): void {
+    const user = this.authService.getCurrentUser();
+    if (!user || user.role !== 'user') return;
+    this.enquiryForm.patchValue({
+      customerName: user.name,
+      customerPhone: user.phone,
+      customerEmail: user.email,
+    });
+    this.enquiryForm.controls.customerEmail.disable({ emitEvent: false });
+  }
+
+  private isCustomerEmailValid(): boolean {
+    const customerEmail = this.enquiryForm.controls.customerEmail;
+    return customerEmail.enabled
+      ? customerEmail.valid
+      : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail.value.trim());
+  }
+
+  private markFormAllAsTouchedAfterSubmit(): void {
+    this.enquiryForm.markAllAsTouched();
+    this.hasMarkedFormTouchedAfterSubmit = true;
   }
 }

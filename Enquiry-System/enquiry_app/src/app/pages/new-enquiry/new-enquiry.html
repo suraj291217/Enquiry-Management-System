@@ -74,7 +74,7 @@
 								<div class="form-field form-field-wide">
 									<mat-form-field appearance="outline" subscriptSizing="dynamic">
 										<mat-label>Your email</mat-label>
-										<input matInput id="customerEmail" formControlName="customerEmail" type="email" (input)="saveEnquiryDraft()" />
+										<input matInput id="customerEmail" formControlName="customerEmail" type="email" readonly />
 										@if (enquiryForm.controls.customerEmail.touched && !enquiryForm.controls.customerEmail.valid) {
 											<mat-error>Enter a valid email address.</mat-error>
 										}
@@ -169,7 +169,7 @@
 			<div>
 				<p class="page-kicker">Request progress</p>
 				<h2 id="track-enquiry-heading">Track your enquiry</h2>
-				<p class="page-intro">Enter the enquiry ID from your confirmation and the email used to submit it.</p>
+				<p class="page-intro">Enter the enquiry ID from your confirmation. Your account keeps this request private.</p>
 			</div>
 		</div>
 		<div class="enquiry-card enquiry-panel track-card">
@@ -192,12 +192,6 @@
 							<label for="trackingId">Enquiry ID <span>*</span></label>
 							<mat-form-field appearance="outline" subscriptSizing="dynamic">
 								<input matInput id="trackingId" name="trackingId" type="text" placeholder="e.g. ENQ-0001" [(ngModel)]="trackingForm.enquiryId" (ngModelChange)="saveTrackingDraft()" required />
-							</mat-form-field>
-						</div>
-						<div class="form-field">
-							<label for="trackingEmail">Email address <span>*</span></label>
-							<mat-form-field appearance="outline" subscriptSizing="dynamic">
-								<input matInput id="trackingEmail" name="trackingEmail" type="email" placeholder="The email used to submit" [(ngModel)]="trackingForm.email" (ngModelChange)="saveTrackingDraft()" required />
 							</mat-form-field>
 						</div>
 					</div>

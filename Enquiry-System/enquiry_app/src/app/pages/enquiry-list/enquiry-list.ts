@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IEnquiry } from '../../model/enquiry.model';
@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { AuthService } from '../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   imports: [CommonModule, FormsModule, MatExpansionModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatTableModule],
@@ -20,11 +22,13 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
   templateUrl: './enquiry-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EnquiryList {
+export class EnquiryList implements OnInit {
   private readonly enquiryService = inject(EnquiryService);
   private readonly categoryService = inject(CategoryService);
   private readonly statusService = inject(StatusService);
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  readonly loadError = signal('');
 
   readonly enquiries = this.enquiryService.getEnquiries;
   readonly categories = this.categoryService.getCategories;
@@ -46,6 +50,17 @@ export class EnquiryList {
     effect(() => {
       this.enquiries();
       this.dataSource.data = this.filteredEnquiries;
+    });
+  }
+
+  ngOnInit(): void {
+    if (!this.authService.hasRole('admin')) return;
+    this.enquiryService.loadEnquiries().subscribe({
+      error: error => this.loadError.set(
+        error instanceof HttpErrorResponse && typeof error.error?.message === 'string'
+          ? error.error.message
+          : 'We could not load enquiries. Please refresh and try again.',
+      ),
     });
   }
 

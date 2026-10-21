@@ -19,7 +19,6 @@
 
 html,
 body,
-#root,
 app-root {
 	max-width: 100%;
 	overflow-x: hidden;
@@ -29,6 +28,7 @@ body {
 	font-family: var(--app-body-font-family);
 	line-height: 1.5;
 	margin: 0;
+	overflow-x: clip;
 }
 
 button,
@@ -262,8 +262,8 @@ textarea {
 	vertical-align: middle;
 }
 
-.enquiry-page .enquiry-table .mat-column-customer { width: 33%; }
-.enquiry-page .enquiry-table .mat-column-category { width: 15%; }
+.enquiry-page .enquiry-table .mat-column-customer { width: 26%; }
+.enquiry-page .enquiry-table .mat-column-category { width: 22%; }
 .enquiry-page .enquiry-table .mat-column-status { width: 13%; }
 .enquiry-page .enquiry-table .mat-column-submitted { width: 14%; }
 
